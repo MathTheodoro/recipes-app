@@ -23,7 +23,7 @@ function Login() {
     event.preventDefault();
     // Salvar apenas o email na localStorage
     localStorage.setItem('user', JSON.stringify({ email }));
-    // Navega pra home depois do login
+    // Navega pra meals depois do login
     navigate('/meals');
   };
 
