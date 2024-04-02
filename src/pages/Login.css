@@ -1,0 +1,26 @@
+.backgroundPurple {
+    background-color: #41197F;
+    height: 422px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.recipesIconLogin {
+    margin-top: 52px;
+}
+
+.formLogin {
+    margin-top: 100px;
+}
+
+.tittleLogin {
+    font-family: Epilogue;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 20.5px;
+    letter-spacing: 0.165em;
+    text-align: center;
+
+}
