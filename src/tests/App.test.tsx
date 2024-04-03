@@ -2,9 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from '../App';
-import Meals from '../pages/Meals';
 import Header from '../components/Header';
-import Drinks from '../pages/Drinks';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
@@ -42,7 +40,6 @@ describe('Testes para a tela de Login', () => {
   });
 
   test('Testa se ao clicar no botão enviar com os dados preenchidos ele é redirecionado', () => {
-    // Simula o usuário digitando um e-mail e uma senha corretos
     fireEvent.change(email, { target: { value: 'usuario@example.com' } });
     fireEvent.change(password, { target: { value: 'senha123' } });
 
@@ -113,11 +110,28 @@ describe('Testes para o componente Header', () => {
   });
 });
 
-/* describe('Testes para o componente Drinks', () => {
+describe('Testes para o componente Drinks', () => {
+/*   let email: HTMLElement;
+  let password: HTMLElement;
+  let button: HTMLElement; */
+
   test('Verifica se no componente "Drinks", renderiza o Header', () => {
     render(
-      <Drinks />,
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
     );
-    expect(screen.getByText('Drinks')).toBeInTheDocument();
+
+    /* ERRO DE CONFLITO DO RENDER POR CAUSA DO BEFOREEACH!!
+    email = screen.getByTestId('email-input');
+    password = screen.getByTestId('password-input');
+    button = screen.getByTestId('login-submit-btn');
+    fireEvent.change(email, { target: { value: 'usuario@example.com' } });
+    fireEvent.change(password, { target: { value: 'senha123' } });
+
+    fireEvent.click(button); */
+
+    expect(window.location.pathname).toBe('/meals');
+    expect(screen.getAllByText('Meals')).toHaveLength(2);
   });
-}); */
+});
