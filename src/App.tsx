@@ -13,10 +13,8 @@ import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 
 function App() {
-  const location = useLocation();
   return (
     <div>
-      <Header currentPath={ location.pathname } />
       <Routes>
         <Route path="/" element={ <Login /> } />
         <Route path="/meals" element={ <Meals /> } />
