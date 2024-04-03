@@ -1,8 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header'; // Importe o componente Header
 import Login from './pages/Login';
 import Meals from './pages/Meals';
@@ -17,18 +16,18 @@ function App() {
   const location = useLocation();
   return (
     <div>
-      <Header currentPath={location.pathname} />
+      <Header currentPath={ location.pathname } />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/meals" element={<Meals />} />
-        <Route path="/drinks" element={<Drinks />} />
-        <Route path="/meals/:id" element={<RecipeDetails />} />
-        <Route path="/drinks/:id" element={<RecipeDetails />} />
-        <Route path="/meals/:id/in-progress" element={<InProgress />} />
-        <Route path="/drinks/:id/in-progress" element={<InProgress />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/done-recipes" element={<DoneRecipes />} />
-        <Route path="/favorite-recipes" element={<FavoriteRecipes />} />
+        <Route path="/" element={ <Login /> } />
+        <Route path="/meals" element={ <Meals /> } />
+        <Route path="/drinks" element={ <Drinks /> } />
+        <Route path="/meals/:id" element={ <RecipeDetails /> } />
+        <Route path="/drinks/:id" element={ <RecipeDetails /> } />
+        <Route path="/meals/:id/in-progress" element={ <InProgress /> } />
+        <Route path="/drinks/:id/in-progress" element={ <InProgress /> } />
+        <Route path="/profile" element={ <Profile /> } />
+        <Route path="/done-recipes" element={ <DoneRecipes /> } />
+        <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
       </Routes>
     </div>
   );
