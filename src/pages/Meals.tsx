@@ -1,8 +1,15 @@
+import { useLocation } from 'react-router-dom';
+import Header from '../components/Header';
+
 function Meals() {
+  const location = useLocation();
   return (
-    <div>
-      Meals
-    </div>
+    <>
+      <Header currentPath={ location.pathname } />
+      <div>
+        Meals
+      </div>
+    </>
   );
 }
 

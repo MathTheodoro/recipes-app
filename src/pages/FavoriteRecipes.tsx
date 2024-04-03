@@ -1,7 +1,15 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import Header from '../components/Header';
 
 export default function FavoriteRecipes() {
+  const location = useLocation();
   return (
-    <div>FavoriteRecipes</div>
+    <>
+      <Header currentPath={ location.pathname } />
+      <div>
+        FavoriteRecipes
+      </div>
+    </>
   );
 }
