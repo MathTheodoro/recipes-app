@@ -141,6 +141,22 @@ describe('Testes para o componente Header', () => {
     await userEvent.click(profileBtn);
     expect(window.location.pathname).toBe('/profile');
   });
+
+  test('Verifica o value do searchbar', async () => {
+    render(
+      <BrowserRouter>
+        <Header currentPath="/meals" />
+      </BrowserRouter>,
+    );
+    const searchBtn = screen.getByTestId('search-top-btn');
+    await userEvent.click(searchBtn);
+
+    const searchbar = screen.getByRole('textbox');
+    expect(searchbar).toBeInTheDocument();
+
+    await userEvent.type(searchbar, 'test');
+    expect(searchbar).toHaveValue('test');
+  });
 });
 
 describe('Testes para o componente Drinks', () => {
