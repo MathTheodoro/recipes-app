@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import Header from '../components/Header';
 
 function Login() {
-  const location = useLocation();
   const navigate = useNavigate();
   // Estado inicial de login
   const [login, setLogin] = useState({
@@ -32,7 +30,6 @@ function Login() {
 
   return (
     <>
-      <Header currentPath={ location.pathname } />
       <div className="backgroundPurple">
         <img
           src="src\images\recipesIconLogin.svg"

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 interface HeaderProps {
   currentPath: string;
@@ -33,9 +34,7 @@ export default function Header({ currentPath }: HeaderProps) {
       break;
   }
 
-  const [search, setSearch] = useState('');
   const [searchBar, setSearchBar] = useState(false);
-  const handleChange = ({ target: { value } }: any) => setSearch(value);
   const navigate = useNavigate();
 
   return (
@@ -53,12 +52,7 @@ export default function Header({ currentPath }: HeaderProps) {
       </div>
       <div>
         {searchBar && (
-          <input
-            type="text"
-            value={ search }
-            data-testid="search-input"
-            onChange={ handleChange }
-          />
+          <SearchBar />
         )}
       </div>
     </header>

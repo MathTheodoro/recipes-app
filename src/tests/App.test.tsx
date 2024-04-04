@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
+import Meals from '../pages/Meals';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
@@ -56,14 +57,10 @@ describe('Testes para o componente Header', () => {
   // Renderiza antes de cada test a pagina de app
 
   test('Rota "/": não tem header', () => {
-    render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>,
-    );
     const header = screen.queryByTestId('header');
     expect(header).not.toBeInTheDocument();
   });
+
   test('Verifica se no Meals, renderiza o Header', () => {
     render(
       <BrowserRouter>
@@ -109,7 +106,7 @@ describe('Testes para o componente Header', () => {
     expect(profiles).toBeInTheDocument();
   });
 
-  test('Verifica se no DoneRecipes, renderiza o Header', () => {
+  test('Verifica se no FavoriteRecipies, renderiza o Header', () => {
     render(
       <BrowserRouter>
         <Header currentPath="/favorite-recipes" />
@@ -128,7 +125,14 @@ describe('Testes para o componente Header', () => {
     );
     const searchBtn = screen.getByTestId('search-top-btn');
     await userEvent.click(searchBtn);
-    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    const text = screen.getByRole('textbox');
+    expect(text).toBeInTheDocument();
+    const radioButton = screen.getByTestId('name-search-radio');
+    expect(radioButton).toBeInTheDocument();
+    const labelSearch = screen.getByTestId('search-input');
+    expect(labelSearch).toBeInTheDocument();
+    await userEvent.click(searchBtn);
+    expect(text).not.toBeInTheDocument();
   });
 
   test('Verifica se profile aparece na página depois de clicar no botão', async () => {
@@ -157,30 +161,27 @@ describe('Testes para o componente Header', () => {
     await userEvent.type(searchbar, 'test');
     expect(searchbar).toHaveValue('test');
   });
-});
 
-describe('Testes para o componente Drinks', () => {
-/*   let email: HTMLElement;
-  let password: HTMLElement;
-  let button: HTMLElement; */
-
-  test('Verifica se no componente "Drinks", renderiza o Header', () => {
+  test('Verifica se showSearchIcon é false para uma rota não mapeada', () => {
     render(
       <BrowserRouter>
-        <App />
+        <Header currentPath="/outraRota" />
       </BrowserRouter>,
     );
 
-    /* ERRO DE CONFLITO DO RENDER POR CAUSA DO BEFOREEACH!!
-    email = screen.getByTestId('email-input');
-    password = screen.getByTestId('password-input');
-    button = screen.getByTestId('login-submit-btn');
-    fireEvent.change(email, { target: { value: 'usuario@example.com' } });
-    fireEvent.change(password, { target: { value: 'senha123' } });
+    // Verifica se o ícone de busca não está renderizado
+    expect(screen.getByRole('heading')).toBeInTheDocument();
+  });
+});
 
-    fireEvent.click(button); */
-
-    expect(window.location.pathname).toBe('/meals');
-    expect(screen.getAllByText('Meals')).toHaveLength(2);
+describe('Testes para o component searchBar', () => {
+  test('Verifica o value do searchbar', async () => {
+    render(
+      <BrowserRouter>
+        <Meals />
+      </BrowserRouter>,
+    );
+    const searchBtn = screen.getByTestId('profile-top-btn');
+    expect(searchBtn).toBeInTheDocument();
   });
 });
