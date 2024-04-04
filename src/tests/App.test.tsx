@@ -1,6 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
 
@@ -65,7 +66,9 @@ describe('Testes para o componente Header', () => {
   });
   test('Verifica se no Meals, renderiza o Header', () => {
     render(
-      <Header currentPath="/meals" />,
+      <BrowserRouter>
+        <Header currentPath="/meals" />
+      </BrowserRouter>,
     );
 
     expect(window.location.pathname).toBe('/meals');
@@ -75,7 +78,9 @@ describe('Testes para o componente Header', () => {
 
   test('Verifica se no Drinks, renderiza o Header', () => {
     render(
-      <Header currentPath="/drinks" />,
+      <BrowserRouter>
+        <Header currentPath="/drinks" />
+      </BrowserRouter>,
     );
 
     const drinks = screen.getByText('Drinks');
@@ -84,7 +89,9 @@ describe('Testes para o componente Header', () => {
 
   test('Verifica se no Profile, renderiza o Header', () => {
     render(
-      <Header currentPath="/profile" />,
+      <BrowserRouter>
+        <Header currentPath="/profile" />
+      </BrowserRouter>,
     );
 
     const profiles = screen.getByText('Profile');
@@ -93,7 +100,9 @@ describe('Testes para o componente Header', () => {
 
   test('Verifica se no DoneRecipes, renderiza o Header', () => {
     render(
-      <Header currentPath="/done-recipes" />,
+      <BrowserRouter>
+        <Header currentPath="/done-recipes" />
+      </BrowserRouter>,
     );
 
     const profiles = screen.getByText('Done Recipes');
@@ -102,11 +111,35 @@ describe('Testes para o componente Header', () => {
 
   test('Verifica se no DoneRecipes, renderiza o Header', () => {
     render(
-      <Header currentPath="/favorite-recipes" />,
+      <BrowserRouter>
+        <Header currentPath="/favorite-recipes" />
+      </BrowserRouter>,
     );
 
     const profiles = screen.getByText('Favorite Recipes');
     expect(profiles).toBeInTheDocument();
+  });
+
+  test('Verifica se searchbar aparece depois de clicar no botão', async () => {
+    render(
+      <BrowserRouter>
+        <Header currentPath="/meals" />
+      </BrowserRouter>,
+    );
+    const searchBtn = screen.getByTestId('search-top-btn');
+    await userEvent.click(searchBtn);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  });
+
+  test('Verifica se profile aparece na página depois de clicar no botão', async () => {
+    render(
+      <BrowserRouter>
+        <Header currentPath="/meals" />
+      </BrowserRouter>,
+    );
+    const profileBtn = screen.getByTestId('profile-top-btn');
+    await userEvent.click(profileBtn);
+    expect(window.location.pathname).toBe('/profile');
   });
 });
 
