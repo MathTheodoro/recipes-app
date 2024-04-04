@@ -1,7 +1,7 @@
 import React from 'react';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
-import SearchBar from './SearchBar/SearchBar';
+import Search from './Search';
 
 interface HeaderProps {
   currentPath: string;
@@ -43,6 +43,7 @@ export default function Header({ currentPath }: HeaderProps) {
           <img data-testid="search-top-btn" src={ searchIcon } alt="buscar" />
         </button>
       )}
+      <Search />
       <h1 data-testid="page-title">{pageTitle}</h1>
     </div>
   );

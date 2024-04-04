@@ -26,6 +26,7 @@ function App() {
         <Route path="/profile" element={ <Profile /> } />
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
+        <Route path="/*" element={ <h1>Not Found</h1> } />
       </Routes>
     </div>
   );
