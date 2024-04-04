@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import RecipeContext from '../context/RecipeContext';
 import { SearchType, ChangeEvent, SubmitEvent } from '../types/types';
 
-function Search() {
+function SearchBar() {
   const { searchedInput } = useContext(RecipeContext);
 
   // searchData
@@ -85,4 +85,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default SearchBar;

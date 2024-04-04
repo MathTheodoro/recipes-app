@@ -8,7 +8,7 @@ export default function Drinks() {
     <>
       <Header currentPath={ location.pathname } />
       <div>
-        Drinks
+        <h3>Drinks</h3>
       </div>
     </>
   );
