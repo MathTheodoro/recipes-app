@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
 import Meals from '../pages/Meals';
+import Footer from '../components/Footer/Footer';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
@@ -183,5 +184,29 @@ describe('Testes para o component searchBar', () => {
     );
     const searchBtn = screen.getByTestId('profile-top-btn');
     expect(searchBtn).toBeInTheDocument();
+  });
+});
+
+describe('Testes para o component Footer', () => {
+  test('Verifica se vai para página Drinks depois de clicar no botão', async () => {
+    render(
+      <BrowserRouter>
+        <Footer />
+      </BrowserRouter>,
+    );
+    const drinkBtn = screen.getByRole('button', { name: /drink icon/i });
+    await userEvent.click(drinkBtn);
+    expect(window.location.pathname).toBe('/drinks');
+  });
+
+  test('Verifica se vai para página Meals depois de clicar no botão', async () => {
+    render(
+      <BrowserRouter>
+        <Footer />
+      </BrowserRouter>,
+    );
+    const mealsBtn = screen.getByRole('button', { name: /meal icon/i });
+    await userEvent.click(mealsBtn);
+    expect(window.location.pathname).toBe('/meals');
   });
 });
