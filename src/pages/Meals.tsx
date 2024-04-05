@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer/Footer';
 
 function Meals() {
   const location = useLocation();
@@ -9,6 +10,7 @@ function Meals() {
       <div>
         Meals
       </div>
+      <Footer />
     </>
   );
 }
