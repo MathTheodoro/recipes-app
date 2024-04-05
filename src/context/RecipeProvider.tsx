@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 import RecipeContext from './RecipeContext';
 import { SearchType } from '../types/types';
@@ -9,7 +10,10 @@ type RecipeProviderProps = {
 
 function RecipeProvider({ children }: RecipeProviderProps) {
   const [filterData, setFilterData] = useState<any>({});
-  const [foodType, setFoodType] = useState('meal');
+  const {
+    pathname,
+  } = useLocation();
+  const [foodType, setFoodType] = useState(pathname.includes('meals') ? 'meal' : 'drink');
 
   const searchedInput = (input: SearchType) => {
     setFilterData(input);

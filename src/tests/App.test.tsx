@@ -175,7 +175,7 @@ describe('Testes para o componente Header', () => {
 });
 
 describe('Testes para o component searchBar', () => {
-  test('Verifica o value do searchbar', async () => {
+  test('Verifica o botão do searchbar', async () => {
     render(
       <BrowserRouter>
         <Meals />
