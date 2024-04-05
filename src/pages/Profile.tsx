@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer/Footer';
 
 export default function Profile() {
   const location = useLocation();
@@ -10,6 +11,7 @@ export default function Profile() {
       <div>
         Profiles
       </div>
+      <Footer />
     </>
   );
 }
