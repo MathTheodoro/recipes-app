@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
 import Meals from '../pages/Meals';
+import SearchBar from '../components/SearchBar';
+import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';
 
 describe('Testes para a tela de Login', () => {
@@ -130,8 +132,6 @@ describe('Testes para o componente Header', () => {
     expect(text).toBeInTheDocument();
     const radioButton = screen.getByTestId('name-search-radio');
     expect(radioButton).toBeInTheDocument();
-    const labelSearch = screen.getByTestId('search-input');
-    expect(labelSearch).toBeInTheDocument();
     await userEvent.click(searchBtn);
     expect(text).not.toBeInTheDocument();
   });
@@ -147,22 +147,6 @@ describe('Testes para o componente Header', () => {
     expect(window.location.pathname).toBe('/profile');
   });
 
-  test('Verifica o value do searchbar', async () => {
-    render(
-      <BrowserRouter>
-        <Header currentPath="/meals" />
-      </BrowserRouter>,
-    );
-    const searchBtn = screen.getByTestId('search-top-btn');
-    await userEvent.click(searchBtn);
-
-    const searchbar = screen.getByRole('textbox');
-    expect(searchbar).toBeInTheDocument();
-
-    await userEvent.type(searchbar, 'test');
-    expect(searchbar).toHaveValue('test');
-  });
-
   test('Verifica se showSearchIcon é false para uma rota não mapeada', () => {
     render(
       <BrowserRouter>
@@ -176,14 +160,47 @@ describe('Testes para o componente Header', () => {
 });
 
 describe('Testes para o component searchBar', () => {
-  test('Verifica o value do searchbar', async () => {
+  test('Verifica o Radio Button do searchbar', async () => {
     render(
       <BrowserRouter>
-        <Meals />
+        <SearchBar />
       </BrowserRouter>,
     );
-    const searchBtn = screen.getByTestId('profile-top-btn');
-    expect(searchBtn).toBeInTheDocument();
+    const nameRadioButton = screen.getByTestId('name-search-radio');
+    expect(nameRadioButton).toBeInTheDocument();
+    const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
+    expect(ingredientRadioButton).toBeInTheDocument();
+    const firstLetterRadioButton = screen.getByTestId('first-letter-search-radio');
+    expect(firstLetterRadioButton).toBeInTheDocument();
+  });
+
+  test('Verifica o label e button search do searchbar', async () => {
+    render(
+      <BrowserRouter>
+        <SearchBar />
+      </BrowserRouter>,
+    );
+    const searchInput = screen.getByTestId('search-input');
+    expect(searchInput).toBeInTheDocument();
+    const execSearchBtn = screen.getByTestId('exec-search-btn');
+    expect(execSearchBtn).toBeInTheDocument();
+  });
+
+  test('Testando funções do searchbar', async () => {
+    render(
+      <BrowserRouter>
+        <RecipeProvider>
+          <SearchBar />
+        </RecipeProvider>
+      </BrowserRouter>,
+    );
+    window.history.pushState({}, 'Test page', '/drinks');
+    const input = screen.getByTestId('search-input');
+    const execSearchBtn = screen.getByTestId('exec-search-btn');
+    fireEvent.change(input, { target: { name: 'searchedtext', value: 'Aquamarine' } });
+    expect(input).toHaveValue('Aquamarine');
+    fireEvent.click(execSearchBtn);
+    expect(window.location.pathname).toBe('/drinks');
   });
 });
 

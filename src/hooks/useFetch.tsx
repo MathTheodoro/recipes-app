@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   fetchMealFirstLetterSearch,
   fetchMealIngredientSearch,
@@ -7,11 +8,13 @@ import {
   fetchDrinkIngredientSearch,
   fetchDrinkFirstLetterSearch,
 } from '../services/api';
+import { DrinkType, MealType } from '../types/types';
 
 function useFetch(searchType: string, searchText: string, foodType: string) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const alertFunction = () => {
     if (searchText.length > 1) {
@@ -19,34 +22,50 @@ function useFetch(searchType: string, searchText: string, foodType: string) {
     }
   };
 
+  const notFoundRecipies = (param: MealType[] | DrinkType[] | null) => {
+    if (param === null) {
+      window.alert("Sorry, we haven't found any recipes for these filters");
+    }
+  };
+
+  const teste = async (
+    parametro: (value: string) => Promise<MealType[]>,
+    parametro2: (value: string) => Promise<DrinkType[]>,
+  ) => {
+    if (foodType === 'meal') {
+      const response = await parametro(searchText);
+      notFoundRecipies(response);
+      if (response && response.length === 1) {
+        navigate(`/${foodType}s/${response[0].idMeal}`);
+      }
+      setData(response);
+      return;
+    }
+    const response = await parametro2(searchText);
+    notFoundRecipies(response);
+    if (response && response.length === 1) {
+      navigate(`/${foodType}s/${response[0].idDrink}`);
+      setData(response);
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
-        let response;
         switch (searchType) {
           case 'name':
-            if (foodType === 'meal') {
-              response = await fetchMealNameSearch(searchText);
-            }
-            response = await fetchDrinkNameSearch(searchText);
+            teste(fetchMealNameSearch, fetchDrinkNameSearch);
             break;
           case 'ingredient':
-            if (foodType === 'meal') {
-              response = await fetchMealIngredientSearch(searchText);
-            }
-            response = await fetchDrinkIngredientSearch(searchText);
+            teste(fetchMealIngredientSearch, fetchDrinkIngredientSearch);
             break;
           case 'firstletter':
             alertFunction();
-            if (foodType === 'meal') {
-              response = await fetchMealFirstLetterSearch(searchText);
-            }
-            response = await fetchDrinkFirstLetterSearch(searchText);
+            teste(fetchMealFirstLetterSearch, fetchDrinkFirstLetterSearch);
             break;
           default:
             throw new Error('Invalid search type');
         }
-        setData(response);
         setLoading(false);
       } catch (e: any) {
         setError(e.message);
