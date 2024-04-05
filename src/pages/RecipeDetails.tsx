@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
+import { fetchDrinks, fetchMeals } from '../services/api';
 
 type Recipe = {
   idMeal?: string;
@@ -25,8 +26,10 @@ function RecipeDetails() {
       let url = '';
       if (location.pathname.includes('/meals')) {
         url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+        fetchDrinks();
       } else if (location.pathname.includes('/drinks')) {
         url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+        fetchMeals();
       }
       try {
         const response = await fetch(url);
