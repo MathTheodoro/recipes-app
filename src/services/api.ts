@@ -44,8 +44,7 @@ export const fetchMeals = async () => {
       throw new Error('Network response was not ok');
     }
     const data = await response.json();
-    // Aqui você pode manipular os dados recebidos da API de bebidas
-    console.log(data);
+    return data.meals; // Retorne os dados
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
   }
@@ -58,8 +57,7 @@ export const fetchDrinks = async () => {
       throw new Error('Network response was not ok');
     }
     const data = await response.json();
-    // Aqui você pode manipular os dados recebidos da API de bebidas
-    console.log(data);
+    return data.drinks; // Retorne os dados
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
   }

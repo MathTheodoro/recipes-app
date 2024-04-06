@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { fetchDrinks, fetchMeals } from '../services/api';
-
-type Recipe = {
-  idMeal?: string;
-  strMeal?: string;
-  strMealThumb?: string;
-  strCategory?: string;
-  strInstructions?: string;
-  strYoutube?: string;
-  idDrink?: string;
-  strDrink?: string;
-  strDrinkThumb?: string;
-  strAlcoholic?: string;
-};
+import { Recipe } from '../types/types';
+import RecommendationCard from '../components/RecommendationCard';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [ingredients, setIngredients] = useState<Array<string>>([]);
+  const [recommendations, setRecommendations] = useState<Recipe[]>([]);
   const { id } = useParams();
   const location = useLocation();
 
@@ -42,6 +32,23 @@ function RecipeDetails() {
       }
     };
     fetchRecipe();
+  }, [id, location.pathname]);
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        let data;
+        if (location.pathname.includes('/meals')) {
+          data = await fetchDrinks();
+        } else if (location.pathname.includes('/drinks')) {
+          data = await fetchMeals();
+        }
+        setRecommendations(data);
+      } catch (error) {
+        console.error('Erro ao buscar recomendações:', error);
+      }
+    };
+    fetchRecommendations();
   }, [id, location.pathname]);
 
   const saveArrIng = (data: any) => {
@@ -86,6 +93,11 @@ function RecipeDetails() {
           allowFullScreen
         />
       )}
+      <div style={ { display: 'flex', overflowX: 'scroll', minWidth: '1200px' } }>
+        {recommendations.slice(0, 6).map((recommendation, index) => (
+          <RecommendationCard key={ index } recipe={ recommendation } index={ index } />
+        ))}
+      </div>
     </div>
   );
 }

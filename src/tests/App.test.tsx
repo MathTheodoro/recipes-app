@@ -1,12 +1,13 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';
+import RecipeDetails from '../pages/RecipeDetails';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
@@ -224,5 +225,15 @@ describe('Testes para o component Footer', () => {
     const mealsBtn = screen.getByRole('button', { name: /meal icon/i });
     await userEvent.click(mealsBtn);
     expect(window.location.pathname).toBe('/meals');
+  });
+});
+
+describe('Testes do componente RecipeDetails', () => {
+  it('renders without crashing', () => {
+    render(
+      <MemoryRouter>
+        <RecipeDetails />
+      </MemoryRouter>,
+    );
   });
 });
