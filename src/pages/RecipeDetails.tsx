@@ -98,6 +98,24 @@ function RecipeDetails() {
           <RecommendationCard key={ index } recipe={ recommendation } index={ index } />
         ))}
       </div>
+      <button
+        type="button"
+        style={ {
+          position: 'fixed',
+          bottom: '0',
+          width: '100%',
+          height: '50px',
+          backgroundColor: '#f8f9fa',
+          border: 'none',
+          borderRadius: '5px',
+          color: '#495057',
+          fontSize: '18px',
+          fontWeight: 'bold',
+        } }
+        data-testid="start-recipe-btn"
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }

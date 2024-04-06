@@ -236,4 +236,17 @@ describe('Testes do componente RecipeDetails', () => {
       </MemoryRouter>,
     );
   });
+
+  test('renders loading state initially', () => {
+    render(<RecipeDetails />, { wrapper: MemoryRouter });
+    expect(screen.getByText('Carregando...')).toBeInTheDocument();
+  });
+
+  test('renders meal details when pathname includes /meals', () => {
+    render(<MemoryRouter initialEntries={ ['/meals/12345'] }><RecipeDetails /></MemoryRouter>);
+  });
+
+  test('renders drink details when pathname includes /drinks', () => {
+    render(<MemoryRouter initialEntries={ ['/drinks/12345'] }><RecipeDetails /></MemoryRouter>);
+  });
 });
