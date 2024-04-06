@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
-import Meals from '../pages/Meals';
 import SearchBar from '../components/SearchBar';
 import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';

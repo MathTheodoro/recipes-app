@@ -28,12 +28,12 @@ function useFetch(searchType: string, searchText: string, foodType: string) {
     }
   };
 
-  const teste = async (
-    parametro: (value: string) => Promise<MealType[]>,
-    parametro2: (value: string) => Promise<DrinkType[]>,
+  const drinkOrMeal = async (
+    mealParam: (value: string) => Promise<MealType[]>,
+    drinkParam: (value: string) => Promise<DrinkType[]>,
   ) => {
     if (foodType === 'meal') {
-      const response = await parametro(searchText);
+      const response = await mealParam(searchText);
       notFoundRecipies(response);
       if (response && response.length === 1) {
         navigate(`/${foodType}s/${response[0].idMeal}`);
@@ -41,7 +41,7 @@ function useFetch(searchType: string, searchText: string, foodType: string) {
       setData(response);
       return;
     }
-    const response = await parametro2(searchText);
+    const response = await drinkParam(searchText);
     notFoundRecipies(response);
     if (response && response.length === 1) {
       navigate(`/${foodType}s/${response[0].idDrink}`);
@@ -54,14 +54,14 @@ function useFetch(searchType: string, searchText: string, foodType: string) {
       try {
         switch (searchType) {
           case 'name':
-            teste(fetchMealNameSearch, fetchDrinkNameSearch);
+            drinkOrMeal(fetchMealNameSearch, fetchDrinkNameSearch);
             break;
           case 'ingredient':
-            teste(fetchMealIngredientSearch, fetchDrinkIngredientSearch);
+            drinkOrMeal(fetchMealIngredientSearch, fetchDrinkIngredientSearch);
             break;
           case 'firstletter':
             alertFunction();
-            teste(fetchMealFirstLetterSearch, fetchDrinkFirstLetterSearch);
+            drinkOrMeal(fetchMealFirstLetterSearch, fetchDrinkFirstLetterSearch);
             break;
           default:
             throw new Error('Invalid search type');

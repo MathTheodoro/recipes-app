@@ -36,3 +36,31 @@ export const fetchDrinkFirstLetterSearch = async (firstLetter: string) => {
   const data = await response.json();
   return data.drinks as DrinkType[];
 };
+
+export const fetchMeals = async () => {
+  try {
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    // Aqui você pode manipular os dados recebidos da API de bebidas
+    console.log(data);
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+};
+
+export const fetchDrinks = async () => {
+  try {
+    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    // Aqui você pode manipular os dados recebidos da API de bebidas
+    console.log(data);
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  }
+};
