@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fetchDrinks, fetchMeals } from '../services/api';
 import { Recipe } from '../types/types';
 import RecommendationCard from '../components/RecommendationCard';
@@ -11,6 +11,13 @@ function RecipeDetails() {
   const [isRecipeInProgress, setIsRecipeInProgress] = useState(false);
   const { id } = useParams();
   const location = useLocation();
+
+  const navigate = useNavigate();
+
+  const handleStartRecipeClick = () => {
+    const recipeType = location.pathname.includes('/meals') ? 'meals' : 'drinks';
+    navigate(`/${recipeType}/${id}/in-progress`);
+  };
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -129,6 +136,7 @@ function RecipeDetails() {
           fontWeight: 'bold',
         } }
         data-testid="start-recipe-btn"
+        onClick={ handleStartRecipeClick }
       >
         {isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
       </button>
