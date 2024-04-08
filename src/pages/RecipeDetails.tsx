@@ -8,6 +8,7 @@ function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [ingredients, setIngredients] = useState<Array<string>>([]);
   const [recommendations, setRecommendations] = useState<Recipe[]>([]);
+  const [isRecipeInProgress, setIsRecipeInProgress] = useState(false);
   const { id } = useParams();
   const location = useLocation();
 
@@ -32,6 +33,21 @@ function RecipeDetails() {
       }
     };
     fetchRecipe();
+  }, [id, location.pathname]);
+
+  useEffect(() => {
+    const inProgressRecipes = localStorage.getItem('inProgressRecipes')
+      ? JSON.parse(localStorage.getItem('inProgressRecipes') as string)
+      : { meals: {}, drinks: {} };
+
+    if (id) { // Verifique se id não é undefined
+      const currentRecipeId = id;
+      const isCurrentRecipeInProgress = location.pathname.includes('/meals')
+        ? inProgressRecipes.meals[currentRecipeId]
+        : inProgressRecipes.drinks[currentRecipeId];
+
+      setIsRecipeInProgress(!!isCurrentRecipeInProgress);
+    }
   }, [id, location.pathname]);
 
   useEffect(() => {
@@ -114,7 +130,7 @@ function RecipeDetails() {
         } }
         data-testid="start-recipe-btn"
       >
-        Start Recipe
+        {isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
       </button>
     </div>
   );
