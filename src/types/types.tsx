@@ -53,6 +53,7 @@ export type Recipe = {
   strDrink?: string;
   strDrinkThumb?: string;
   strAlcoholic?: string;
+  [key: string]: string | undefined;
 };
 
 export type ChangeEvent = React.ChangeEvent<HTMLSelectElement | HTMLInputElement>;
