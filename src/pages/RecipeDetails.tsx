@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fetchDrinks, fetchMeals } from '../services/api';
-
-type Recipe = {
-  idMeal?: string;
-  strMeal?: string;
-  strMealThumb?: string;
-  strCategory?: string;
-  strInstructions?: string;
-  strYoutube?: string;
-  idDrink?: string;
-  strDrink?: string;
-  strDrinkThumb?: string;
-  strAlcoholic?: string;
-};
+import { Recipe } from '../types/types';
+import RecommendationCard from '../components/RecommendationCard';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [ingredients, setIngredients] = useState<Array<string>>([]);
+  const [recommendations, setRecommendations] = useState<Recipe[]>([]);
+  const [isRecipeInProgress, setIsRecipeInProgress] = useState(false);
   const { id } = useParams();
   const location = useLocation();
+
+  const navigate = useNavigate();
+
+  const handleStartRecipeClick = () => {
+    const recipeType = location.pathname.includes('/meals') ? 'meals' : 'drinks';
+    navigate(`/${recipeType}/${id}/in-progress`);
+  };
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -42,6 +40,38 @@ function RecipeDetails() {
       }
     };
     fetchRecipe();
+  }, [id, location.pathname]);
+
+  useEffect(() => {
+    const inProgressRecipes = localStorage.getItem('inProgressRecipes')
+      ? JSON.parse(localStorage.getItem('inProgressRecipes') as string)
+      : { meals: {}, drinks: {} };
+
+    if (id) { // Verifique se id não é undefined
+      const currentRecipeId = id;
+      const isCurrentRecipeInProgress = location.pathname.includes('/meals')
+        ? inProgressRecipes.meals[currentRecipeId]
+        : inProgressRecipes.drinks[currentRecipeId];
+
+      setIsRecipeInProgress(!!isCurrentRecipeInProgress);
+    }
+  }, [id, location.pathname]);
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        let data;
+        if (location.pathname.includes('/meals')) {
+          data = await fetchDrinks();
+        } else if (location.pathname.includes('/drinks')) {
+          data = await fetchMeals();
+        }
+        setRecommendations(data);
+      } catch (error) {
+        console.error('Erro ao buscar recomendações:', error);
+      }
+    };
+    fetchRecommendations();
   }, [id, location.pathname]);
 
   const saveArrIng = (data: any) => {
@@ -86,6 +116,30 @@ function RecipeDetails() {
           allowFullScreen
         />
       )}
+      <div style={ { display: 'flex', overflowX: 'scroll', minWidth: '1200px' } }>
+        {recommendations.slice(0, 6).map((recommendation, index) => (
+          <RecommendationCard key={ index } recipe={ recommendation } index={ index } />
+        ))}
+      </div>
+      <button
+        type="button"
+        style={ {
+          position: 'fixed',
+          bottom: '0',
+          width: '100%',
+          height: '50px',
+          backgroundColor: '#f8f9fa',
+          border: 'none',
+          borderRadius: '5px',
+          color: '#495057',
+          fontSize: '18px',
+          fontWeight: 'bold',
+        } }
+        data-testid="start-recipe-btn"
+        onClick={ handleStartRecipeClick }
+      >
+        {isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
+      </button>
     </div>
   );
 }
