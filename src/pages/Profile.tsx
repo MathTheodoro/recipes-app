@@ -1,17 +1,44 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer/Footer';
 
-export default function Profile() {
-  const location = useLocation();
+function Profile() {
+  const navigate = useNavigate();
+  const handleDoneRecipesClick = () => {
+    navigate('/done-recipes'); // Redireciona pra tela de receitas feitas
+  };
+
+  const handleFavoriteRecipesClick = () => {
+    navigate('/favorite-recipes');// Redireciona pra tela de receitas favoritas
+  };
+
+  const handleLogoutClick = () => {
+    console.log('Logout button clicked');
+    localStorage.clear();
+    console.log('localStorage cleared:', localStorage);
+    navigate('/');// Limpeza do localStorage e redireciona pra tela de login
+  };
+
   return (
     <>
-      <Header currentPath={ location.pathname } />
       <div>
-        Profiles
+        {/* Email do usuário */}
+        <p data-testid="profile-email">{localStorage.getItem('user')}</p>
+
+        {/* Botões */}
+        <button data-testid="profile-done-btn" onClick={ handleDoneRecipesClick }>
+          Done Recipes
+        </button>
+        <button data-testid="profile-favorite-btn" onClick={ handleFavoriteRecipesClick }>
+          Favorite Recipes
+        </button>
+        <button data-testid="profile-logout-btn" onClick={ handleLogoutClick }>
+          Logout
+        </button>
       </div>
       <Footer />
     </>
   );
 }
+export default Profile;
