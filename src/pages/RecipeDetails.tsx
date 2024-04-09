@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fetchDrinks, fetchMeals } from '../services/api';
 import { DrinkType, MealType, Recipe } from '../types/types';
 import RecommendationCard from '../components/RecommendationCard';
+import './RecipeDetails.css';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -10,6 +11,7 @@ function RecipeDetails() {
   const [recommendations, setRecommendations] = useState<Recipe[]>([]);
   const [isRecipeInProgress, setIsRecipeInProgress] = useState<boolean>(false);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [copySuccess, setCopySuccess] = useState('');
   const { id } = useParams();
   const location = useLocation();
 
@@ -28,8 +30,11 @@ function RecipeDetails() {
         url: window.location.href,
       }).catch(console.error);
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+          setCopySuccess('Link copied!'); // Atualize o estado quando a cópia for bem-sucedida
+        })
+        .catch((err) => console.error('Could not copy text: ', err));
     }
   };
 
@@ -69,20 +74,29 @@ function RecipeDetails() {
     const favoriteRecipes = localStorage.getItem('favoriteRecipes')
       ? JSON.parse(localStorage.getItem('favoriteRecipes') as string)
       : [];
-    if (isFavorite) {
-      const newFavoriteRecipes = favoriteRecipes.filter(
-        (favRecipe: any) => favRecipe.id !== id,
-      );
-      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
-      setIsFavorite(false);
-    } else {
-      const newFavoriteRecipe = {
-        id,
-      };
-      localStorage.setItem('favoriteRecipes', JSON.stringify(
-        [...favoriteRecipes, newFavoriteRecipe],
-      ));
-      setIsFavorite(true);
+
+    if (recipe) { // Adicione esta verificação
+      if (isFavorite) {
+        const newFavoriteRecipes = favoriteRecipes.filter(
+          (favRecipe: any) => favRecipe.id !== id,
+        );
+        localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+        setIsFavorite(false);
+      } else {
+        const newFavoriteRecipe = {
+          id: recipe.idMeal || recipe.idDrink,
+          type: location.pathname.includes('/meals') ? 'meal' : 'drink',
+          nationality: recipe.strArea || '',
+          category: recipe.strCategory || '',
+          alcoholicOrNot: recipe.strAlcoholic || '',
+          name: recipe.strMeal || recipe.strDrink,
+          image: recipe.strMealThumb || recipe.strDrinkThumb,
+        };
+        localStorage.setItem('favoriteRecipes', JSON.stringify(
+          [...favoriteRecipes, newFavoriteRecipe],
+        ));
+        setIsFavorite(true);
+      }
     }
   };
 
@@ -146,7 +160,7 @@ function RecipeDetails() {
   if (!recipe) return <div>Carregando...</div>;
 
   return (
-    <div>
+    <div className="RecipeDetails">
       <p>Dados da Receita</p>
       <img
         data-testid="recipe-photo"
@@ -183,18 +197,7 @@ function RecipeDetails() {
       </div>
       <button
         type="button"
-        style={ {
-          position: 'fixed',
-          bottom: '0',
-          width: '100%',
-          height: '50px',
-          backgroundColor: '#f8f9fa',
-          border: 'none',
-          borderRadius: '5px',
-          color: '#495057',
-          fontSize: '18px',
-          fontWeight: 'bold',
-        } }
+        className="startRecipeBtn"
         data-testid="start-recipe-btn"
         onClick={ handleStartRecipeClick }
       >
@@ -203,17 +206,21 @@ function RecipeDetails() {
       <button
         type="button"
         data-testid="share-btn"
+        className="compartilhar"
         onClick={ handleShareClick }
       >
         Compartilhar
       </button>
-      <button
-        type="button"
+      <input
+        type="image"
         data-testid="favorite-btn"
         onClick={ handleFavoriteClick }
-      >
-        Favoritar
-      </button>
+        src={ isFavorite
+          ? 'src/images/blackHeartIcon.svg' : 'src/images/whiteHeartIcon.svg' }
+        alt="Favorite"
+      />
+
+      {copySuccess && <div>{copySuccess}</div>}
     </div>
   );
 }
