@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, getByText, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
@@ -8,6 +8,9 @@ import SearchBar from '../components/SearchBar';
 import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';
 import RecipeDetails from '../pages/RecipeDetails';
+
+const START_RECIPE_BTN = 'start-recipe-btn';
+const LOADING = 'Carregando...';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
@@ -55,10 +58,6 @@ describe('Testes para a tela de Login', () => {
 });
 
 describe('Testes para o componente Header', () => {
-  // Cria variaveis para os inputs e buttons da tela de login
-
-  // Renderiza antes de cada test a pagina de app
-
   test('Rota "/": não tem header', () => {
     const header = screen.queryByTestId('header');
     expect(header).not.toBeInTheDocument();
@@ -229,7 +228,14 @@ describe('Testes para o component Footer', () => {
 });
 
 describe('Testes do componente RecipeDetails', () => {
-  it('renders without crashing', () => {
+  /* beforeEach(() => {
+    const mockData = {};
+    const spy = jest.spyOn(RecipeDetails, fetch);
+  });
+  afterEach(() => {
+
+  }); */
+  test('renders without crashing', () => {
     render(
       <MemoryRouter>
         <RecipeDetails />
@@ -239,7 +245,7 @@ describe('Testes do componente RecipeDetails', () => {
 
   test('renders loading state initially', () => {
     render(<RecipeDetails />, { wrapper: MemoryRouter });
-    expect(screen.getByText('Carregando...')).toBeInTheDocument();
+    expect(screen.getByText(LOADING)).toBeInTheDocument();
   });
 
   test('renders meal details when pathname includes /meals', () => {
@@ -248,5 +254,27 @@ describe('Testes do componente RecipeDetails', () => {
 
   test('renders drink details when pathname includes /drinks', () => {
     render(<MemoryRouter initialEntries={ ['/drinks/12345'] }><RecipeDetails /></MemoryRouter>);
+  });
+
+  test('renders "Start Recipe" button initially', async () => {
+    const { getByTestId } = render(<MemoryRouter initialEntries={ ['/drinks/17222'] }><RecipeDetails /></MemoryRouter>);
+    expect(screen.getByText(LOADING)).toBeInTheDocument();
+    /* await waitFor(() => expect(getByTestId(START_RECIPE_BTN)).toBeInTheDocument()); */
+    await waitFor(() => expect(screen.getByText('Receita')).toBeInTheDocument());
+    expect(screen.queryByText(LOADING)).toBeNull();
+    expect(getByTestId(START_RECIPE_BTN)).toHaveTextContent('Start Recipe');
+  });
+
+  test('changes button text to "Continue Recipe" when clicked', () => {
+    const { getByTestId } = render(<RecipeDetails />, { wrapper: MemoryRouter });
+    const button = getByTestId(START_RECIPE_BTN);
+    fireEvent.click(button);
+    expect(button).toHaveTextContent('Continue Recipe');
+  });
+
+  test('renders "Share" and "Favorite" buttons', () => {
+    const { getByTestId } = render(<RecipeDetails />, { wrapper: MemoryRouter });
+    expect(getByTestId('share-btn')).toBeInTheDocument();
+    expect(getByTestId('favorite-btn')).toBeInTheDocument();
   });
 });

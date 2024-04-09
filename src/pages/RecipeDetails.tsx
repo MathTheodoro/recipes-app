@@ -1,42 +1,101 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { fetchDrinks, fetchMeals } from '../services/api';
-import { Recipe } from '../types/types';
+import { DrinkType, MealType, Recipe } from '../types/types';
 import RecommendationCard from '../components/RecommendationCard';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [ingredients, setIngredients] = useState<Array<string>>([]);
   const [recommendations, setRecommendations] = useState<Recipe[]>([]);
-  const [isRecipeInProgress, setIsRecipeInProgress] = useState(false);
+  const [isRecipeInProgress, setIsRecipeInProgress] = useState<boolean>(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const { id } = useParams();
   const location = useLocation();
 
   const navigate = useNavigate();
+  const erroRecive = 'Erro ao buscar receita:';
 
   const handleStartRecipeClick = () => {
     const recipeType = location.pathname.includes('/meals') ? 'meals' : 'drinks';
     navigate(`/${recipeType}/${id}/in-progress`);
   };
 
+  const handleShareClick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Check out this recipe!',
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
+
+  const fetchDrink = async (drinkId: string | undefined): Promise<DrinkType | null> => {
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.drinks.length > 0) { return data.drinks[0]; }
+    } catch (error) {
+      console.error(erroRecive, error);
+    }
+    return null;
+  };
+
+  const fetchMeal = async (mealId: string | undefined): Promise<MealType | null> => {
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.meals.length > 0) { return data.meals[0]; }
+    } catch (error) {
+      console.error(erroRecive, error);
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const favoriteRecipes = localStorage.getItem('favoriteRecipes')
+      ? JSON.parse(localStorage.getItem('favoriteRecipes') as string)
+      : [];
+    const isFav = favoriteRecipes.some((favRecipe: any) => favRecipe.id === id);
+    setIsFavorite(isFav);
+  }, [id]);
+
+  const handleFavoriteClick = () => {
+    const favoriteRecipes = localStorage.getItem('favoriteRecipes')
+      ? JSON.parse(localStorage.getItem('favoriteRecipes') as string)
+      : [];
+    if (isFavorite) {
+      const newFavoriteRecipes = favoriteRecipes.filter(
+        (favRecipe: any) => favRecipe.id !== id,
+      );
+      localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+      setIsFavorite(false);
+    } else {
+      const newFavoriteRecipe = {
+        id,
+      };
+      localStorage.setItem('favoriteRecipes', JSON.stringify(
+        [...favoriteRecipes, newFavoriteRecipe],
+      ));
+      setIsFavorite(true);
+    }
+  };
+
   useEffect(() => {
     const fetchRecipe = async () => {
-      let url = '';
-      if (location.pathname.includes('/meals')) {
-        url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
-        fetchDrinks();
-      } else if (location.pathname.includes('/drinks')) {
-        url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
-        fetchMeals();
-      }
       try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const recipeData = data.meals ? data.meals[0] : data.drinks[0];
+        const recipeData = location.pathname.includes('/meals')
+          ? await fetchMeal(id) as Recipe
+          : await fetchDrink(id) as Recipe;
         setRecipe(recipeData);
         setIngredients(saveArrIng(recipeData));
       } catch (error) {
-        console.error('Erro ao buscar receita:', error);
+        console.error(erroRecive, error);
       }
     };
     fetchRecipe();
@@ -53,7 +112,7 @@ function RecipeDetails() {
         ? inProgressRecipes.meals[currentRecipeId]
         : inProgressRecipes.drinks[currentRecipeId];
 
-      setIsRecipeInProgress(!!isCurrentRecipeInProgress);
+      setIsRecipeInProgress(isCurrentRecipeInProgress);
     }
   }, [id, location.pathname]);
 
@@ -88,6 +147,7 @@ function RecipeDetails() {
 
   return (
     <div>
+      <p>Dados da Receita</p>
       <img
         data-testid="recipe-photo"
         src={ recipe.strMealThumb || recipe.strDrinkThumb }
@@ -96,9 +156,9 @@ function RecipeDetails() {
       <h1 data-testid="recipe-title">{recipe.strMeal || recipe.strDrink}</h1>
       <p data-testid="recipe-category">
         {
-      `${recipe.strCategory}Alcoholic`
-      || (recipe.strAlcoholic ? 'Alcoholic' : 'Non-Alcoholic')
-}
+          `${recipe.strCategory}Alcoholic`
+          || (recipe.strAlcoholic ? 'Alcoholic' : 'Non-Alcoholic')
+        }
       </p>
       <ul>
         {ingredients.map((ingredient, index) => (
@@ -139,6 +199,20 @@ function RecipeDetails() {
         onClick={ handleStartRecipeClick }
       >
         {isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
+      </button>
+      <button
+        type="button"
+        data-testid="share-btn"
+        onClick={ handleShareClick }
+      >
+        Compartilhar
+      </button>
+      <button
+        type="button"
+        data-testid="favorite-btn"
+        onClick={ handleFavoriteClick }
+      >
+        Favoritar
       </button>
     </div>
   );

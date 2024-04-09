@@ -42,18 +42,7 @@ export type MealType = {
   strYoutube: string
 };
 
-export type Recipe = {
-  idMeal?: string;
-  strMeal?: string;
-  strMealThumb?: string;
-  strCategory?: string;
-  strInstructions?: string;
-  strYoutube?: string;
-  idDrink?: string;
-  strDrink?: string;
-  strDrinkThumb?: string;
-  strAlcoholic?: string;
-};
+export interface Recipe extends DrinkType, MealType {}
 
 export type ChangeEvent = React.ChangeEvent<HTMLSelectElement | HTMLInputElement>;
 export type SubmitEvent = React.FormEvent<HTMLFormElement>;
