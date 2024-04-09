@@ -1,10 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer/Footer';
 
 function Profile() {
   const navigate = useNavigate();
+  const location = useLocation();
   const handleDoneRecipesClick = () => {
     navigate('/done-recipes'); // Redireciona pra tela de receitas feitas
   };
@@ -23,6 +24,7 @@ function Profile() {
   return (
     <>
       <div>
+        <Header currentPath={ location.pathname } />
         {/* Email do usuário */}
         <p data-testid="profile-email">{localStorage.getItem('user')}</p>
 
