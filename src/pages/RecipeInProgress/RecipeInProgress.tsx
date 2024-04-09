@@ -1,6 +1,6 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Recipe } from '../types/types';
+import { Recipe } from '../../types/types';
 import './RecipeInProgress.css';
 
 function RecipeInProgress() {

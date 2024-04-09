@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';
-import RecipeDetails from '../pages/RecipeDetails';
+import RecipeDetails from '../pages/RecipeDetails/RecipeDetails';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
