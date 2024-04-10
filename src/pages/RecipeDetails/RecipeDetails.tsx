@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { fetchDrinks, fetchMeals } from '../services/api';
-import { Recipe } from '../types/types';
-import RecommendationCard from '../components/RecommendationCard';
+import { fetchDrinks, fetchMeals } from '../../services/api';
+import { Recipe } from '../../types/types';
+import RecommendationCard from '../../components/RecommendationCard';
 
 function RecipeDetails() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
