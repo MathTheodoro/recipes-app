@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { act } from 'react-dom/test-utils';
-import { fireEvent, getByText, render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
@@ -283,19 +282,4 @@ describe('Testes do componente RecipeDetails', () => {
     expect(getByTestId('share-btn')).toBeInTheDocument();
     expect(getByTestId('favorite-btn')).toBeInTheDocument();
   });
-
-/*   test('share button changes copySuccess state when clicked', async () => {
-    const shareButton = screen.getByTestId('share-btn');
-    act(() => fireEvent.click(shareButton));
-
-    expect(await screen.findByText('Link copied!')).toBeInTheDocument();
-  });
-  test('copies URL to clipboard when share button is clicked', async () => {
-    const shareButton = screen.getByTestId('share-btn');
-
-    act(() => fireEvent.click(shareButton));
-    let paste; Que isso de certo!
-
-    expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith('Content to copy');
-  }); */
 });

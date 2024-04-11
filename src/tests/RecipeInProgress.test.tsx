@@ -7,7 +7,6 @@ import App from '../App';
 const Arrabiata = 'Spicy Arrabiata Penne';
 const arrabiataImg = 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg';
 const rota = '/meals/52771/in-progress';
-const routeDrinks = '/drinks/178319/in-progress';
 
 afterEach(() => { window.localStorage.clear(); });
 

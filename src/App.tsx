@@ -1,10 +1,10 @@
 import React from 'react';
-import { useLocation, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/Login/Login';
-import Meals from './pages/Meals/Meals';
-import Drinks from './pages/Drinks/Drinks';
+import Meals from './components/Meals';
+import Drinks from './components/Drinks';
 import RecipeDetails from './pages/RecipeDetails/RecipeDetails';
 import InProgress from './pages/RecipeInProgress/RecipeInProgress';
 import Profile from './pages/Profile/Profile';
