@@ -84,3 +84,24 @@ export type Recipe = {
 
 export type ChangeEvent = React.ChangeEvent<HTMLSelectElement | HTMLInputElement>;
 export type SubmitEvent = React.FormEvent<HTMLFormElement>;
+
+export interface Meal {
+  idMeal: string;
+  strMeal: string;
+  strMealThumb: string;
+}
+
+export interface Drink {
+  idDrink: string;
+  strDrink: string;
+  strDrinkThumb: string;
+}
+
+export interface Category {
+  idCategory: string;
+  strCategory: string;
+  strCategoryThumb: string;
+  strCategoryDescription: string;
+}
+
+export type CategoriesList = Category[];
