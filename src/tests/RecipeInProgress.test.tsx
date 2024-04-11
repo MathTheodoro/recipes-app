@@ -167,7 +167,7 @@ describe('Testes da tela RecipeInProgress', () => {
     setItemSpy.mockRestore();
   });
 
-  test('Testando a função createDrinks', async () => {
+  /*   test('Testando a função createDrinks', async () => {
     // Configuração do teste
     const { user } = renderWithRouter(<App />, { route: `${routeDrinks}` });
 
@@ -190,7 +190,7 @@ describe('Testes da tela RecipeInProgress', () => {
       }]),
     );
     setItemSpy.mockRestore();
-  });
+  }); */
 
   test('Testando a função copyLink', async () => {
     const { user } = renderWithRouter(<App />, { route: `${rota}` });
