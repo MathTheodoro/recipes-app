@@ -294,7 +294,7 @@ describe('Testes do componente RecipeDetails', () => {
     const shareButton = screen.getByTestId('share-btn');
 
     act(() => fireEvent.click(shareButton));
-    let paste;
+    let paste; Que isso de certo.
 
     expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith('Content to copy');
   }); */
