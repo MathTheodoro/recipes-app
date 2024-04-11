@@ -20,6 +20,24 @@ export default function Card({
     setCopy(true);
   };
 
+  const desfavoritar = () => {
+    // Puxe as receitas favoritas do localStorage
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+
+    // Encontre o índice da receita atual nas receitas favoritas
+    const recipeIndex = favoriteRecipes.findIndex((recipe) => recipe.id === id);
+
+    // Se a receita estiver nas receitas favoritas, remova-a
+    if (recipeIndex !== -1) {
+      favoriteRecipes.splice(recipeIndex, 1);
+    }
+
+    // Atualize o localStorage com as novas receitas favoritas
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
+
+    console.log('Receita desfavoritada');
+  };
+
   return (
     <div>
       <Link to={ `${window.location.origin}/${type}s/${id}` }>
@@ -43,18 +61,24 @@ export default function Card({
       <div>
         <button
           type="button"
-          src={ iconShare }
-          data-testid={ `${index}-horizontal-share-btn` }
           onClick={ () => copyUrl() }
         >
+          <img
+            src={ iconShare }
+            alt="Compartilhar"
+            data-testid={ `${index}-horizontal-share-btn` }
+          />
           Compartilhar
         </button>
         { copy && <p>Link copied!</p>}
         <button
           type="button"
-          src={ iconFav }
-          data-testid={ `${index}-horizontal-favorite-btn` }
         >
+          <img
+            src={ iconFav }
+            alt="Compartilhar"
+            data-testid={ `${index}-horizontal-favorite-btn` }
+          />
           Desfavoritar
         </button>
       </div>
