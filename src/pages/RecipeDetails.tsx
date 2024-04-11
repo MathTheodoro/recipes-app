@@ -20,6 +20,7 @@ function RecipeDetails() {
 
   const handleStartRecipeClick = () => {
     const recipeType = location.pathname.includes('/meals') ? 'meals' : 'drinks';
+    console.log('>>>>OLHA PRA CÁ<<<<', location.pathname);
     navigate(`/${recipeType}/${id}/in-progress`);
   };
 
@@ -28,8 +29,11 @@ function RecipeDetails() {
       navigator.share({
         title: 'Check out this recipe!',
         url: window.location.href,
+      }).then(() => {
+        setCopySuccess('Link copied!'); // Atualize o estado quando a cópia for bem-sucedida
       }).catch(console.error);
     } else {
+      console.log('==================>>>', navigator);
       navigator.clipboard.writeText(window.location.href)
         .then(() => {
           setCopySuccess('Link copied!'); // Atualize o estado quando a cópia for bem-sucedida
