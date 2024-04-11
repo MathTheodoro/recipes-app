@@ -33,6 +33,7 @@ export type DrinkType = {
   strInstructions: string
   strInstructionsES: string
   strInstructionsIT: string
+  strTags: string[]
 };
 
 export type MealType = {
@@ -77,7 +78,8 @@ export type Recipe = {
   strDrink?: string;
   strDrinkThumb?: string;
   strAlcoholic?: string;
-  [key: string]: string | undefined;
+  strTags?: string;
+  [key: string]: string | string[] | undefined;
 };
 
 export type ChangeEvent = React.ChangeEvent<HTMLSelectElement | HTMLInputElement>;
