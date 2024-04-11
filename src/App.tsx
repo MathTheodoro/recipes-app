@@ -2,14 +2,14 @@ import React from 'react';
 import { useLocation, Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './pages/Login';
-import Meals from './pages/Meals';
-import Drinks from './pages/Drinks';
-import RecipeDetails from './pages/RecipeDetails';
-import InProgress from './pages/InProgress';
-import Profile from './pages/Profile';
-import DoneRecipes from './pages/DoneRecipes';
-import FavoriteRecipes from './pages/FavoriteRecipes';
+import Login from './pages/Login/Login';
+import Meals from './pages/Meals/Meals';
+import Drinks from './pages/Drinks/Drinks';
+import RecipeDetails from './pages/RecipeDetails/RecipeDetails';
+import InProgress from './pages/RecipeInProgress/RecipeInProgress';
+import Profile from './pages/Profile/Profile';
+import DoneRecipes from './pages/DoneRecipes/DoneRecipes';
+import FavoriteRecipes from './pages/FavoriteRecipes/FavoriteRecipes';
 
 function App() {
   return (
@@ -26,6 +26,7 @@ function App() {
         <Route path="/done-recipes" element={ <DoneRecipes /> } />
         <Route path="/favorite-recipes" element={ <FavoriteRecipes /> } />
         <Route path="/*" element={ <h1>Not Found</h1> } />
+        <Route path="/login/:id" element={ <Login /> } />
       </Routes>
     </div>
   );

@@ -1,17 +1,18 @@
-import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer/Footer';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer/Footer';
 
-export default function Profile() {
+function Meals() {
   const location = useLocation();
   return (
     <>
       <Header currentPath={ location.pathname } />
       <div>
-        Profiles
+        Meals
       </div>
       <Footer />
     </>
   );
 }
+
+export default Meals;

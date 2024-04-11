@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { fetchDrinks, fetchMeals } from '../services/api';
-import { DrinkType, MealType, Recipe } from '../types/types';
-import RecommendationCard from '../components/RecommendationCard';
+import { fetchDrinks, fetchMeals } from '../../services/api';
+import { Recipe } from '../../types/types';
+import RecommendationCard from '../../components/RecommendationCard';
 import './RecipeDetails.css';
 
 function RecipeDetails() {
@@ -42,7 +42,7 @@ function RecipeDetails() {
     }
   };
 
-  const fetchDrink = async (drinkId: string | undefined): Promise<DrinkType | null> => {
+  const fetchDrink = async (drinkId: string | undefined): Promise<Recipe | null> => {
     const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
     try {
       const response = await fetch(url);
@@ -54,7 +54,7 @@ function RecipeDetails() {
     return null;
   };
 
-  const fetchMeal = async (mealId: string | undefined): Promise<MealType | null> => {
+  const fetchMeal = async (mealId: string | undefined): Promise<Recipe | null> => {
     const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`;
     try {
       const response = await fetch(url);

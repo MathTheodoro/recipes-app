@@ -9,9 +9,9 @@ import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';
-import RecipeDetails from '../pages/RecipeDetails';
 import mockDetails1 from './mockDetails1.json';
 import mockDetails2 from './mockDetails2.json';
+import RecipeDetails from '../pages/RecipeDetails/RecipeDetails';
 
 const START_RECIPE_BTN = 'start-recipe-btn';
 const LOADING = 'Carregando...';
