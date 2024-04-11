@@ -1,0 +1,18 @@
+.startRecipeBtn {
+  background: #f8f9fa;
+  border: none;
+  border-radius: 5px;
+  bottom: 0;
+  color: #495057;
+  font-size: 18px;
+  font-weight: 700;
+  height: 50px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+.compartilhar {
+  margin-bottom: 60px;
+}
+

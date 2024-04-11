@@ -1,13 +1,22 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import React, { useState } from 'react';
+import { act } from 'react-dom/test-utils';
+import { fireEvent, getByText, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import RecipeProvider from '../context/RecipeProvider';
 import Footer from '../components/Footer/Footer';
+import mockDetails1 from './mockDetails1.json';
+import mockDetails2 from './mockDetails2.json';
 import RecipeDetails from '../pages/RecipeDetails/RecipeDetails';
+
+const START_RECIPE_BTN = 'start-recipe-btn';
+const LOADING = 'Carregando...';
+const DEFAULT_RECIPE_DETAILS = '/drinks/17222';
+const DEFAULT_MEALS_DETAILS = '/meals/12345';
 
 describe('Testes para a tela de Login', () => {
   // Cria variaveis para os inputs e buttons da tela de login
@@ -55,10 +64,6 @@ describe('Testes para a tela de Login', () => {
 });
 
 describe('Testes para o componente Header', () => {
-  // Cria variaveis para os inputs e buttons da tela de login
-
-  // Renderiza antes de cada test a pagina de app
-
   test('Rota "/": não tem header', () => {
     const header = screen.queryByTestId('header');
     expect(header).not.toBeInTheDocument();
@@ -228,25 +233,69 @@ describe('Testes para o component Footer', () => {
   });
 });
 
+describe('Teste do Loading de RecipeDetails', () => {
+  test('Se há o loading no inicio do renderezição', () => {
+    render(<MemoryRouter initialEntries={ [DEFAULT_RECIPE_DETAILS] }><RecipeDetails /></MemoryRouter>);
+    expect(screen.getByText(LOADING)).toBeInTheDocument();
+  });
+});
+
 describe('Testes do componente RecipeDetails', () => {
-  it('renders without crashing', () => {
-    render(
-      <MemoryRouter>
-        <RecipeDetails />
-      </MemoryRouter>,
-    );
+  beforeEach(async () => {
+    const MOCK_RESPONSE1 = {
+      ok: true,
+      status: 200,
+      json: async () => mockDetails1,
+    } as Response;
+
+    const MOCK_RESPONSE2 = {
+      ok: true,
+      status: 200,
+      json: async () => mockDetails2,
+    } as Response;
+
+    vi.spyOn(global, 'fetch')
+      .mockResolvedValueOnce(MOCK_RESPONSE1)
+      .mockResolvedValueOnce(MOCK_RESPONSE2);
+
+    render(<MemoryRouter initialEntries={ [DEFAULT_RECIPE_DETAILS] }><RecipeDetails /></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+    });
+
+    // window.history.pushState({}, 'Test page', DEFAULT_RECIPE_DETAILS);
   });
 
-  test('renders loading state initially', () => {
-    render(<RecipeDetails />, { wrapper: MemoryRouter });
-    expect(screen.getByText('Carregando...')).toBeInTheDocument();
+  /*   test('Testando botão de "Iniciar Receita" do RecipeDetails', async () => {
+    expect(window.location.pathname).toBe('/meals');
+    const execStartRecipeBtn = screen.getByTestId('start-recipe-btn');
+
+    await userEvent.click(execStartRecipeBtn);
+
+    expect(window.location.pathname).toBe('/meals/17222/in-progress');
+
+    console.log('=================>>>>> LOCAL ATUAL', window.location.pathname);
+  }); */
+
+  test('renders "Share" and "Favorite" buttons', () => {
+    const { getByTestId } = render(<RecipeDetails />, { wrapper: MemoryRouter });
+    expect(getByTestId('share-btn')).toBeInTheDocument();
+    expect(getByTestId('favorite-btn')).toBeInTheDocument();
   });
 
-  test('renders meal details when pathname includes /meals', () => {
-    render(<MemoryRouter initialEntries={ ['/meals/12345'] }><RecipeDetails /></MemoryRouter>);
-  });
+/*   test('share button changes copySuccess state when clicked', async () => {
+    const shareButton = screen.getByTestId('share-btn');
+    act(() => fireEvent.click(shareButton));
 
-  test('renders drink details when pathname includes /drinks', () => {
-    render(<MemoryRouter initialEntries={ ['/drinks/12345'] }><RecipeDetails /></MemoryRouter>);
+    expect(await screen.findByText('Link copied!')).toBeInTheDocument();
   });
+  test('copies URL to clipboard when share button is clicked', async () => {
+    const shareButton = screen.getByTestId('share-btn');
+
+    act(() => fireEvent.click(shareButton));
+    let paste; Que isso de certo!
+
+    expect(window.navigator.clipboard.writeText).toHaveBeenCalledWith('Content to copy');
+  }); */
 });
