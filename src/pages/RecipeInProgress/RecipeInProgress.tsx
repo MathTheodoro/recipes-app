@@ -1,7 +1,21 @@
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Recipe } from '../../types/types';
 import './RecipeInProgress.css';
+
+export const createMealRecipe = (receita: Recipe) => {
+  return {
+    id: receita.idMeal,
+    nationality: receita.strArea,
+    name: receita.strMeal,
+    category: receita.strCategory,
+    image: receita.strMealThumb,
+    tags: receita.strTags ? receita.strTags.split(',') : [],
+    alcoholicOrNot: receita.strAlcoholic || '',
+    type: 'meal',
+    doneDate: new Date(),
+  };
+};
 
 function RecipeInProgress() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -10,6 +24,7 @@ function RecipeInProgress() {
   const [isFavorited, setIsFavorited] = useState(true);
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -22,6 +37,7 @@ function RecipeInProgress() {
       try {
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data);
         const recipeData = location.pathname.includes('/meals')
           ? data.meals[0] : data.drinks[0];
         setRecipe(recipeData);
@@ -118,6 +134,48 @@ function RecipeInProgress() {
     setIsFavorited(!isFavorited);
   };
 
+  // Verifica se todos os ingredientes estão marcados
+  const allIngredientsChecked = () => {
+    if (recipe) {
+      const ingredients = Object.keys(recipe)
+        .filter((key) => key.startsWith('strIngredient') && recipe[key])
+        .map((key) => recipe[key] as string);
+      return ingredients.every((ingredient) => checkedIngredients.includes(ingredient));
+    }
+    return false;
+  };
+
+  const createDrinkRecipe = (receita: Recipe) => {
+    return {
+      alcoholicOrNot: receita.strAlcoholic || '',
+      category: receita.strCategory,
+      doneDate: new Date(),
+      id: receita.idDrink,
+      image: receita.strDrinkThumb,
+      name: receita.strDrink,
+      nationality: receita.strArea || '',
+      tags: receita.strTags ? receita.strTags.split(',') : [],
+      type: 'drink',
+    };
+  };
+
+  const finishRecipe = () => {
+    if (recipe) {
+      const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
+      let newRecipe;
+      if (location.pathname.includes('/meals')) {
+        newRecipe = createMealRecipe(recipe);
+      } else {
+        newRecipe = createDrinkRecipe(recipe);
+      }
+      if (newRecipe) {
+        const newRecipies = [...doneRecipes, newRecipe];
+        localStorage.setItem('doneRecipes', JSON.stringify(newRecipies));
+        navigate('/done-recipes');
+      }
+    }
+  };
+
   if (!recipe) {
     return <div>Loading...</div>;
   }
@@ -125,8 +183,8 @@ function RecipeInProgress() {
   return (
     <div>
       <img
-        src={ recipe.strMealThumb }
-        alt={ recipe.strMeal }
+        src={ recipe.strMealThumb || recipe.strDrinkThumb }
+        alt={ recipe.strMeal || recipe.strDrink }
         data-testid="recipe-photo"
       />
       <h1 data-testid="recipe-title">{recipe.strMeal}</h1>
@@ -170,7 +228,13 @@ function RecipeInProgress() {
           alt="Favorito"
         />
       </button>
-      <button data-testid="finish-recipe-btn">Finalizar Receita</button>
+      <button
+        data-testid="finish-recipe-btn"
+        disabled={ !allIngredientsChecked() }
+        onClick={ finishRecipe }
+      >
+        Finalizar Receita
+      </button>
     </div>
   );
 }
