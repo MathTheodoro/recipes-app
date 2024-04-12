@@ -87,7 +87,6 @@ export type Recipe = DrinkType & MealType;
 export type ChangeEvent = React.ChangeEvent<HTMLSelectElement | HTMLInputElement>;
 export type SubmitEvent = React.FormEvent<HTMLFormElement>;
 
-
 // [key: string]: string | string[] | undefined;
 
 export interface Meal {
