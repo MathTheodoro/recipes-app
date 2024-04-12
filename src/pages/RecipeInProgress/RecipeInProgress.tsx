@@ -1,9 +1,9 @@
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Recipe } from '../../types/types';
+import { RecipeInProgressType } from '../../types/types';
 import './RecipeInProgress.css';
 
-export const createMealRecipe = (receita: Recipe) => {
+export const createMealRecipe = (receita: RecipeInProgressType) => {
   return {
     id: receita.idMeal,
     nationality: receita.strArea,
@@ -18,7 +18,7 @@ export const createMealRecipe = (receita: Recipe) => {
 };
 
 function RecipeInProgress() {
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [recipe, setRecipe] = useState<RecipeInProgressType | null>(null);
   const [checkedIngredients, setCheckedIngredients] = useState<string[]>([]);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [isFavorited, setIsFavorited] = useState(true);
@@ -110,14 +110,15 @@ function RecipeInProgress() {
   // Desfavorita a comida
   const unfavoriteRecipe = () => {
     let favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-    favoriteRecipes = favoriteRecipes.filter((receita: Recipe) => receita.id !== id);
+    favoriteRecipes = favoriteRecipes
+      .filter((receita: RecipeInProgressType) => receita.id !== id);
     localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
   };
 
   // Verifica se a comida está favoritada
   const isFoodFavorited = () => {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
-    return favoriteRecipes.some((receita: Recipe) => receita.id === id);
+    return favoriteRecipes.some((receita: RecipeInProgressType) => receita.id === id);
   };
 
   // Função para alternar o estado de favorito da comida
@@ -145,7 +146,7 @@ function RecipeInProgress() {
     return false;
   };
 
-  const createDrinkRecipe = (receita: Recipe) => {
+  const createDrinkRecipe = (receita: RecipeInProgressType) => {
     return {
       alcoholicOrNot: receita.strAlcoholic || '',
       category: receita.strCategory,

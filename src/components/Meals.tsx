@@ -4,8 +4,9 @@ import { CategoriesList, Meal } from '../types/types';
 import { fetchMealCategories,
   fetchMeals,
   fetchMealsByCategory,
-  fetchMealsByFilters } from '../services/RecipeFetchs/MealFetchs';
+  fetchMealsByFilters } from '../services/RecipesFetchs/MealFetchs';
 import Header from './Header';
+import Footer from './Footer/Footer';
 
 function Meals() {
   const location = useLocation();
@@ -94,6 +95,7 @@ function Meals() {
 
         ))}
       </div>
+      <Footer />
     </>
   );
 }

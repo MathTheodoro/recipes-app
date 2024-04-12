@@ -67,10 +67,27 @@ export type MealType = {
   strYoutube: string
 };
 
+export type RecipeInProgressType = {
+  idMeal?: string;
+  strMeal?: string;
+  strMealThumb?: string;
+  strCategory?: string;
+  strInstructions?: string;
+  strYoutube?: string;
+  idDrink?: string;
+  strDrink?: string;
+  strDrinkThumb?: string;
+  strAlcoholic?: string;
+  strTags?: string;
+  [key: string]: string | string[] | undefined;
+};
+
 export type Recipe = DrinkType & MealType;
 
 export type ChangeEvent = React.ChangeEvent<HTMLSelectElement | HTMLInputElement>;
 export type SubmitEvent = React.FormEvent<HTMLFormElement>;
+
+// [key: string]: string | string[] | undefined;
 
 export interface Meal {
   idMeal: string;
@@ -92,4 +109,3 @@ export interface Category {
 }
 
 export type CategoriesList = Category[];
-

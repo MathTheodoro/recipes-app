@@ -6,7 +6,8 @@ import {
   fetchDrinkCategories,
   fetchDrinks,
   fetchDrinksByCategory,
-  fetchDrinksByFilters } from '../services/RecipeFetchs/DrinkFetchs';
+  fetchDrinksByFilters } from '../services/RecipesFetchs/DrinkFetchs';
+import Footer from './Footer/Footer';
 
 function Drinks() {
   const location = useLocation();
@@ -93,6 +94,7 @@ function Drinks() {
           </div>
         ))}
       </div>
+      <Footer />
     </>
   );
 }
