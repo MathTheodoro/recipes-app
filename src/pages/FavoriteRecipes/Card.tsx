@@ -43,24 +43,18 @@ export default function Card({
       <div>
         <button
           type="button"
+          src={ iconShare }
+          data-testid={ `${index}-horizontal-share-btn` }
           onClick={ () => copyUrl() }
         >
-          <img
-            src={ iconShare }
-            alt="Desfavoritar"
-            data-testid={ `${index}-horizontal-share-btn` }
-          />
           Compartilhar
         </button>
         { copy && <p>Link copied!</p>}
         <button
           type="button"
+          src={ iconFav }
+          data-testid={ `${index}-horizontal-favorite-btn` }
         >
-          <img
-            src={ iconFav }
-            alt="Desfavoritar"
-            data-testid={ `${index}-horizontal-favorite-btn` }
-          />
           Desfavoritar
         </button>
       </div>

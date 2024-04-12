@@ -7,6 +7,8 @@ import App from '../App';
 const Arrabiata = 'Spicy Arrabiata Penne';
 const arrabiataImg = 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg';
 const rota = '/meals/52771/in-progress';
+const routeDrinks = '/drinks/178319/in-progress';
+const ingredient0 = '0-ingredient-step';
 
 afterEach(() => { window.localStorage.clear(); });
 
@@ -70,6 +72,60 @@ const mockRecipeMeal = {
   dateModified: null,
 };
 
+const mockDrinks = {
+  drinks: [{
+    idDrink: '178319',
+    strDrink: 'Aquamarine',
+    strDrinkAlternate: null,
+    strTags: null,
+    strVideo: null,
+    strCategory: 'Cocktail',
+    strIBA: null,
+    strAlcoholic: 'Alcoholic',
+    strGlass: 'Martini Glass',
+    strInstructions: 'Shake well in a shaker with ice.\r\nStrain in a martini glass.',
+    strInstructionsES: 'Agite bien en una coctelera con hielo. Cuela en una copa de Martini.',
+    strInstructionsDE: null,
+    strInstructionsFR: null,
+    strInstructionsIT: 'Shakerare bene in uno shaker con ghiaccio.\r\nFiltrare in una coppetta Martini.',
+    'strInstructionsZH-HANS': null,
+    'strInstructionsZH-HANT': null,
+    strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+    strIngredient1: 'Hpnotiq',
+    strIngredient2: 'Pineapple Juice',
+    strIngredient3: 'Banana Liqueur',
+    strIngredient4: null,
+    strIngredient5: null,
+    strIngredient6: null,
+    strIngredient7: null,
+    strIngredient8: null,
+    strIngredient9: null,
+    strIngredient10: null,
+    strIngredient11: null,
+    strIngredient12: null,
+    strIngredient13: null,
+    strIngredient14: null,
+    strIngredient15: null,
+    strMeasure1: '2 oz',
+    strMeasure2: '1 oz',
+    strMeasure3: '1 oz',
+    strMeasure4: '',
+    strMeasure5: '',
+    strMeasure6: '',
+    strMeasure7: '',
+    strMeasure8: null,
+    strMeasure9: null,
+    strMeasure10: null,
+    strMeasure11: null,
+    strMeasure12: null,
+    strMeasure13: null,
+    strMeasure14: null,
+    strMeasure15: null,
+    strImageSource: null,
+    strImageAttribution: null,
+    strCreativeCommonsConfirmed: 'No',
+    dateModified: null }] };
+
 function renderWithRouter(ui: JSX.Element, { route = '/' } = {}) {
   window.history.pushState({}, '', route);
 
@@ -104,7 +160,7 @@ describe('Testes da tela RecipeInProgress', () => {
     // Cria um espião para a função setItem do localStorage
     const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
-    const ingredientCheckbox = await screen.findByTestId('0-ingredient-step');
+    const ingredientCheckbox = await screen.findByTestId(`${ingredient0}`);
     expect(ingredientCheckbox).toBeInTheDocument();
     await user.click(ingredientCheckbox);
 
@@ -166,31 +222,6 @@ describe('Testes da tela RecipeInProgress', () => {
     setItemSpy.mockRestore();
   });
 
-  /*   test('Testando a função createDrinks', async () => {
-    // Configuração do teste
-    const { user } = renderWithRouter(<App />, { route: `${routeDrinks}` });
-
-    // Cria um espião para a função setItem do localStorage
-    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
-
-    const favoriteButton = await screen.findByTestId('favorite-btn');
-    await user.click(favoriteButton);
-
-    expect(setItemSpy).toHaveBeenCalledWith(
-      'favoriteRecipes',
-      JSON.stringify([{
-        id: '52771',
-        type: 'meal',
-        nationality: 'Italian',
-        category: 'Vegetarian',
-        alcoholicOrNot: '',
-        name: `${Arrabiata}`,
-        image: `${arrabiataImg}`,
-      }]),
-    );
-    setItemSpy.mockRestore();
-  }); */
-
   test('Testando a função copyLink', async () => {
     const { user } = renderWithRouter(<App />, { route: `${rota}` });
 
@@ -223,7 +254,7 @@ describe('Testes da tela RecipeInProgress', () => {
     //   doneDate: dateNow,
     // });
 
-    const checkbox0 = await screen.findByTestId('0-ingredient-step');
+    const checkbox0 = await screen.findByTestId(`${ingredient0}`);
     const checkbox1 = await screen.findByTestId('1-ingredient-step');
     const checkbox2 = await screen.findByTestId('2-ingredient-step');
     const checkbox3 = await screen.findByTestId('3-ingredient-step');
@@ -265,4 +296,120 @@ describe('Testes da tela RecipeInProgress', () => {
     // Limpa o espião após o teste
     // setItemSpy.mockRestore();
   });
+
+  test('Testando a função createDrinks', async () => {
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockDrinks,
+    } as Response;
+
+    const mockFetchDrinks = vi.spyOn(global, 'fetch')
+      .mockResolvedValue(MOCK_RESPONSE);
+
+    // Configuração do teste
+    const { user } = renderWithRouter(<App />, { route: `${routeDrinks}` });
+
+    // Cria um espião para a função setItem do localStorage
+    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+
+    const favoriteButton = await screen.findByTestId('favorite-btn');
+    await user.click(favoriteButton);
+
+    expect(setItemSpy).toHaveBeenCalledWith(
+      'favoriteRecipes',
+      JSON.stringify([{
+        id: '178319',
+        type: 'drink',
+        nationality: '',
+        category: 'Cocktail',
+        alcoholicOrNot: 'Alcoholic',
+        name: 'Aquamarine',
+        image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+      }]),
+    );
+    mockFetchDrinks.mockRestore();
+  });
+
+  test('testando cria drinks', async () => {
+    const MOCK_RESPONSE = {
+      ok: true,
+      status: 200,
+      json: async () => mockDrinks,
+    } as Response;
+
+    const mockFetchDrinks = vi.spyOn(global, 'fetch')
+      .mockResolvedValue(MOCK_RESPONSE);
+
+    const { user } = renderWithRouter(<App />, { route: `${routeDrinks}` });
+
+    const checkbox0 = await screen.findByTestId(`${ingredient0}`);
+    const checkbox1 = await screen.findByTestId('1-ingredient-step');
+    const checkbox2 = await screen.findByTestId('2-ingredient-step');
+
+    await user.click(checkbox0);
+    await user.click(checkbox1);
+    await user.click(checkbox2);
+
+    const finishButton = await screen.findByTestId('finish-recipe-btn');
+    expect(finishButton).toBeEnabled();
+    await user.click(finishButton);
+
+    expect(window.location.pathname).toBe('/done-recipes');
+
+    mockFetchDrinks.mockRestore();
+  });
+
+  // test('should create newRecipe for drinks', async () => {
+  //   const mockDrink = {
+  //     ...mockDrinks.drinks[0],
+  //   };
+
+  //   const location = { pathname: '/drinks' };
+
+  //   let newRecipe;
+
+  //   if (location.pathname.includes('/drinks')) {
+  //     newRecipe = {
+  //       id: mockDrink.idDrink,
+  //       type: 'drink',
+  //       nationality: '',
+  //       category: mockDrink.strCategory,
+  //       alcoholicOrNot: mockDrink.strAlcoholic || '',
+  //       name: mockDrink.strDrink,
+  //       image: mockDrink.strDrinkThumb,
+  //     };
+  //   }
+
+  //   const expectedRecipe = {
+  //     id: '178319',
+  //     type: 'drink',
+  //     nationality: '',
+  //     category: 'Cocktail',
+  //     alcoholicOrNot: 'Alcoholic',
+  //     name: 'Aquamarine',
+  //     image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+  //   };
+
+  //   expect(newRecipe).toEqual(expectedRecipe);
+  // });
+
+  // test('should return false when recipe is null', async () => {
+  //   const recipe = null;
+  //   const checkedIngredients = ['Tomato', 'Onion', 'Garlic'];
+
+  //   const allIngredientsChecked = () => {
+  //     if (recipe) {
+  //       const ingredients = Object.keys(recipe)
+  //         .filter((key) => key.startsWith('strIngredient') && recipe[key])
+  //         .map((key) => recipe[key] as string);
+  //       return ingredients.every((ingredient) => checkedIngredients.includes(ingredient));
+  //     }
+  //     return false;
+  //   };
+
+  //   const result = allIngredientsChecked();
+
+  //   expect(result).toBe(false);
+  // });
 });
