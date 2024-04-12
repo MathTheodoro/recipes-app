@@ -121,14 +121,15 @@ function RecipeDetails() {
 
   useEffect(() => {
     const inProgressRecipes = localStorage.getItem('inProgressRecipes')
+
       ? JSON.parse(localStorage.getItem('inProgressRecipes') as string)
       : { meals: {}, drinks: {} };
+    console.log(inProgressRecipes);
 
     if (id) { // Verifique se id não é undefined
-      const currentRecipeId = id;
       const isCurrentRecipeInProgress = location.pathname.includes('/meals')
-        ? inProgressRecipes.meals[currentRecipeId]
-        : inProgressRecipes.drinks[currentRecipeId];
+        ? Object.keys(inProgressRecipes.meals)?.some((element) => element === id)
+        : Object.keys(inProgressRecipes.drinks).some((element) => element === id);
 
       setIsRecipeInProgress(isCurrentRecipeInProgress);
     }

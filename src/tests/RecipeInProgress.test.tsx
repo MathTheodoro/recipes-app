@@ -344,20 +344,46 @@ describe('Testes da tela RecipeInProgress', () => {
     const { user } = renderWithRouter(<App />, { route: `${routeDrinks}` });
 
     const checkbox0 = await screen.findByTestId(`${ingredient0}`);
+    const checkbox = checkbox0.querySelector('input');
     const checkbox1 = await screen.findByTestId('1-ingredient-step');
     const checkbox2 = await screen.findByTestId('2-ingredient-step');
+    const finishButton = await screen.findByTestId('finish-recipe-btn');
+
+    expect(checkbox0).not.toBeChecked();
+    expect(checkbox1).not.toBeChecked();
+    expect(checkbox2).not.toBeChecked();
+
+    expect(finishButton).toBeDisabled();
 
     await user.click(checkbox0);
     await user.click(checkbox1);
     await user.click(checkbox2);
 
-    const finishButton = await screen.findByTestId('finish-recipe-btn');
+    expect(checkbox).toBeChecked();
+
     expect(finishButton).toBeEnabled();
     await user.click(finishButton);
 
     expect(window.location.pathname).toBe('/done-recipes');
 
     mockFetchDrinks.mockRestore();
+  });
+
+  test('testando falha na criação de drinks', async () => {
+    const MOCK_ERROR = new Error('Erro ao buscar receita:');
+
+    const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const mockFetchDrinks = vi.spyOn(global, 'fetch')
+      .mockRejectedValue(MOCK_ERROR);
+
+    renderWithRouter(<App />, { route: `${routeDrinks}` });
+
+    expect(mockConsoleError).toHaveBeenCalledWith('Erro ao buscar receita:', MOCK_ERROR);
+
+    mockConsoleError.mockRestore();
+    mockFetchDrinks.mockRestore();
+    global.fetch = fetch;
   });
 
   // test('should create newRecipe for drinks', async () => {

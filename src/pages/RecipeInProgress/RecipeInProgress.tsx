@@ -37,7 +37,6 @@ function RecipeInProgress() {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
         const recipeData = location.pathname.includes('/meals')
           ? data.meals[0] : data.drinks[0];
         setRecipe(recipeData);

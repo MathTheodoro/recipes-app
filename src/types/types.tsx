@@ -109,3 +109,15 @@ export interface Category {
 }
 
 export type CategoriesList = Category[];
+
+export type DoneRecipeType = {
+  id: string;
+  type: string;
+  image: string;
+  category: string;
+  name: string;
+  nationality: string;
+  doneDate: string;
+  tags: string[];
+  alcoholicOrNot: string;
+};
