@@ -9,6 +9,7 @@ import {
   fetchDrinksByFilters } from '../services/RecipesFetchs/DrinkFetchs';
 import Footer from './Footer/Footer';
 
+
 function Drinks() {
   const location = useLocation();
   const navigate = useNavigate();
