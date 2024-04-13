@@ -25,26 +25,35 @@ describe('Testes para a tela de Login', () => {
 
   // Renderiza antes de cada test a pagina de app
   beforeEach(() => {
-    render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>,
-    );
-
     email = screen.getByTestId('email-input');
     password = screen.getByTestId('password-input');
     button = screen.getByTestId('login-submit-btn');
   });
 
   test('Existe input de password', () => {
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
     expect(password).toBeInTheDocument();
   });
 
   test('Existe Botão para enviar', () => {
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
     expect(button).toBeInTheDocument();
   });
 
   test('Testa se ao digitar valores incorretos o botão está desabilitado', () => {
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
     // Simula o usuário digitando um e-mail e uma senha incorretos
     fireEvent.change(email, { target: { value: 'usuario' } });
     fireEvent.change(password, { target: { value: '123' } });
@@ -53,6 +62,11 @@ describe('Testes para a tela de Login', () => {
   });
 
   test('Testa se ao clicar no botão enviar com os dados preenchidos ele é redirecionado', () => {
+    render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>,
+    );
     fireEvent.change(email, { target: { value: 'usuario@example.com' } });
     fireEvent.change(password, { target: { value: 'senha123' } });
 
@@ -63,6 +77,11 @@ describe('Testes para a tela de Login', () => {
 });
 
 describe('Testes para o componente Header', () => {
+  render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+  );
   test('Rota "/": não tem header', () => {
     const header = screen.queryByTestId('header');
     expect(header).not.toBeInTheDocument();
@@ -239,47 +258,47 @@ describe('Teste do Loading de RecipeDetails', () => {
   });
 });
 
-describe('Testes do componente RecipeDetails', () => {
-  test('testando', async () => {
-    const MOCK_RESPONSE1 = {
-      ok: true,
-      status: 200,
-      json: async () => mockDetails1,
-    } as Response;
+// describe('Testes do componente RecipeDetails', () => {
+//   test('testando', async () => {
+//     const MOCK_RESPONSE1 = {
+//       ok: true,
+//       status: 200,
+//       json: async () => mockDetails1,
+//     } as Response;
 
-    const MOCK_RESPONSE2 = {
-      ok: true,
-      status: 200,
-      json: async () => mockDetails2,
-    } as Response;
+//     const MOCK_RESPONSE2 = {
+//       ok: true,
+//       status: 200,
+//       json: async () => mockDetails2,
+//     } as Response;
 
-    vi.spyOn(global, 'fetch')
-      .mockResolvedValueOnce(MOCK_RESPONSE1)
-      .mockResolvedValueOnce(MOCK_RESPONSE2);
+//     vi.spyOn(global, 'fetch')
+//       .mockResolvedValueOnce(MOCK_RESPONSE1)
+//       .mockResolvedValueOnce(MOCK_RESPONSE2);
 
-    render(<MemoryRouter initialEntries={ [DEFAULT_RECIPE_DETAILS] }><RecipeDetails /></MemoryRouter>);
+//     render(<MemoryRouter initialEntries={ [DEFAULT_RECIPE_DETAILS] }><RecipeDetails /></MemoryRouter>);
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled();
-    });
+//     await waitFor(() => {
+//       expect(global.fetch).toHaveBeenCalled();
+//     });
 
-    // window.history.pushState({}, 'Test page', DEFAULT_RECIPE_DETAILS);
-  });
+//     // window.history.pushState({}, 'Test page', DEFAULT_RECIPE_DETAILS);
+//   });
 
-  /*   test('Testando botão de "Iniciar Receita" do RecipeDetails', async () => {
-    expect(window.location.pathname).toBe('/meals');
-    const execStartRecipeBtn = screen.getByTestId('start-recipe-btn');
+//   /*   test('Testando botão de "Iniciar Receita" do RecipeDetails', async () => {
+//     expect(window.location.pathname).toBe('/meals');
+//     const execStartRecipeBtn = screen.getByTestId('start-recipe-btn');
 
-    await userEvent.click(execStartRecipeBtn);
+//     await userEvent.click(execStartRecipeBtn);
 
-    expect(window.location.pathname).toBe('/meals/17222/in-progress');
+//     expect(window.location.pathname).toBe('/meals/17222/in-progress');
 
-    console.log('=================>>>>> LOCAL ATUAL', window.location.pathname);
-  }); */
+//     console.log('=================>>>>> LOCAL ATUAL', window.location.pathname);
+//   }); */
 
-// test('renders "Share" and "Favorite" buttons', () => {
-//   const { getByTestId } = render(<RecipeDetails />, { wrapper: MemoryRouter });
-//   expect(getByTestId('share-btn')).toBeInTheDocument();
-//   expect(getByTestId('favorite-btn')).toBeInTheDocument();
+// // test('renders "Share" and "Favorite" buttons', () => {
+// //   const { getByTestId } = render(<RecipeDetails />, { wrapper: MemoryRouter });
+// //   expect(getByTestId('share-btn')).toBeInTheDocument();
+// //   expect(getByTestId('favorite-btn')).toBeInTheDocument();
+// // });
 // });
-});

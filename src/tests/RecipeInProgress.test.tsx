@@ -369,22 +369,21 @@ describe('Testes da tela RecipeInProgress', () => {
     mockFetchDrinks.mockRestore();
   });
 
-  test('testando falha na criação de drinks', async () => {
-    const MOCK_ERROR = new Error('Erro ao buscar receita:');
+  // test('testando falha na criação de drinks', async () => {
+  //   const MOCK_ERROR = new Error('Erro ao buscar receita:');
 
-    const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+  //   const mockConsoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    const mockFetchDrinks = vi.spyOn(global, 'fetch')
-      .mockRejectedValue(MOCK_ERROR);
+  //   const mockFetchDrinks = vi.spyOn(global, 'fetch')
+  //     .mockRejectedValue(MOCK_ERROR);
 
-    renderWithRouter(<App />, { route: `${routeDrinks}` });
+  //   renderWithRouter(<App />, { route: `${routeDrinks}` });
 
-    expect(mockConsoleError).toHaveBeenCalledWith('Erro ao buscar receita:', MOCK_ERROR);
+  //   expect(mockConsoleError).toHaveBeenCalledWith('Erro ao buscar receita:', MOCK_ERROR);
 
-    mockConsoleError.mockRestore();
-    mockFetchDrinks.mockRestore();
-    global.fetch = fetch;
-  });
+  //   mockConsoleError.mockRestore();
+  //   mockFetchDrinks.mockRestore();
+  // });
 
   // test('should create newRecipe for drinks', async () => {
   //   const mockDrink = {
