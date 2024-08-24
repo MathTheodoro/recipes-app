@@ -1,0 +1,64 @@
+.recites-page {
+	display: flex;
+	flex-direction: column;
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0 auto;
+}
+
+.recites-cat-btn {
+	border-radius: 50%;
+	border: none;
+	width: 200px;
+	height: 200px;
+	margin: 20px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #e4e3e4;
+}
+
+.recites-cat-btn img {
+ width: 100px;
+ margin-bottom: 20px;
+}
+.recites-cat-btn p {
+	font-size: 30px;
+}
+.recites-card {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 20px;
+	width: 1500px;
+	margin: 50px auto;
+  margin-bottom: 150px;
+}
+
+.recites-card a {
+  text-decoration: none;
+  color: black;
+}
+
+.cards {
+	width: 300px;
+	height: 400px;
+	display: flex;
+	justify-content: space-around;
+	flex-direction: column;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.cards img {
+	width:300px;
+  margin: 0 auto;
+	border-radius: 20px;
+}

@@ -1,13 +1,90 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+* {
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  padding: 0;
+  font-family: Roboto;
+  height: 100vh;
+  background-color: #e4e3e4;
+}
+
+h1 {
+  text-align: center;
+  padding: 1rem;
+  font-size: 60px;
+  width: 250px;
+  margin: 20px auto;
+}
+
+.icon {
+  padding: 2rem;
+  background-color: transparent;
+  border: none;
+  width: 110px;
+
+  img {
+    width: 50px;
+  }
+}
+
+.nav-bar {
+  background-color: #fcdc36 ;
+}
+
+.input-group {
+  width: 320px;
+}
+
+.btn-lg {
+  width: 320px;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+
+  input {
+    width: 50px;
+  }
+
+   h1 {
+    font-weight: 800;
+    color: #fcdc36;
+    letter-spacing: 0.5rem;
+    margin-top: 200px;
+   }
+   
+}
+
+.hero {
+  background-color: #41197F;
+  background-image: url('./images/login-pic.png');
+  background-position-y: 150px;
+  background-repeat: no-repeat;
+}
+
+.hero .recipe-logo {
+  width: 170px;
+  height: 150px;
+  margin: 40px 50%;
+}
+
+.label {
+  display: flex;
+  gap: 1rem;
+}
+
+.search-input {
+  margin: 1rem auto;
+}
+
+.search_radio {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }

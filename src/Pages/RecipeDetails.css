@@ -1,0 +1,84 @@
+body {
+  text-align: center;
+}
+
+h3 {
+  font-size: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.details-recipe-header {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: yellow;
+}
+
+.details-recipe-header h2 {
+  font-size: 50px;
+  color: #41197f;
+}
+
+
+.details-recipe-header button {
+  background-color: #41197f;
+  width: 100px;
+  margin-left: 20px;
+}
+
+.title, .ingredients, .instructions, .recommendations {
+  width: 1200px;
+  padding: 30px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.details-recipe-header-h1 {
+  margin-top: 40px;
+  font-size: 70px; 
+}
+
+.details-recipe-img {
+  width: 70%;
+  height: 400px;
+}
+.ingredients ul {
+  max-width: 900px;
+  margin: 0 auto;
+}
+ul li {
+  text-align: justify;
+  font-size: 30px;
+}
+
+.instructions p {
+  font-size: 25px;
+  text-align: justify;
+}
+
+.instructions span {
+  font-size: 30px;
+}
+
+.recommendation-carousel {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.recommendation-card {
+  width: 300px;
+  height: 300px;
+  display: inline-block;
+}
+.recommendation-card img {
+  width: 200px;
+}
+
+.recommendation-carousel::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.recommendation-carousel::-webkit-scrollbar {
+  border-radius: 10px;
+}

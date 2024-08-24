@@ -1,0 +1,38 @@
+.recites-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.recites-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 200px;
+}
+
+.recites-card img {
+  width: 160px;
+}
+
+.recites-card a {
+  border: 1px solid rgba(128, 128, 128, 0.26);
+  border-radius: 5%;
+  color: #1a1b1c;
+  text-decoration: none;
+  width: 160px;
+}
+
+.recites-card h3 {
+  font-size: 1.1rem;
+  padding: 0.5rem;
+}
+
+.recites-cat-btn {
+  background-color: transparent;
+  border: none;
+  margin-right: 0.2rem;
+}
+

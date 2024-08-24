@@ -1,0 +1,23 @@
+.recommendation-carousel {
+  display: flex; /* Exibir os cards lado a lado */
+  gap: 10px; /* Espaçamento entre os cards */
+  overflow-x: scroll; /* Habilitar a rolagem horizontal */
+  overflow-y: hidden; /* Desabilitar a rolagem vertical */
+  padding: 10px; /* Adicionar um preenchimento interno */
+  white-space: nowrap; /* Impedir que os elementos quebrem a linha */
+}
+
+.recommendation-card {
+  border: 1px solid #ccc; /* Adicionar uma borda para destacar os cards */
+  flex: 0 0 auto; /* Manter o tamanho original dos cards */
+  width: 300px; /* Definir a largura dos cards */
+}
+
+.recommendation-card img {
+  width: 100%; /* Assegurar que a imagem do card ocupe toda a largura */
+}
+
+/* Esconder a barra de rolagem padrão */
+::-webkit-scrollbar {
+  display: none;
+}

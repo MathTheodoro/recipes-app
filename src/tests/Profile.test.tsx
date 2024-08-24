@@ -1,66 +1,66 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import Profile from '../pages/Profile/Profile';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import App from '../App';
+import renderWithRouter from './Helpers/RenderWithBrowser';
 
-describe('Profile component', () => {
-  beforeEach(() => {
-    localStorage.setItem('user', 'test@example.com');
+const emailTestId = 'profile-email';
+
+const doneRecipesTestId = 'profile-done-btn';
+
+const favoriteRecipesTestId = 'profile-favorite-btn';
+
+const logoutTestId = 'profile-logout-btn';
+
+describe('Profile', () => {
+  it('renderiza o email e os botoes', () => {
+    renderWithRouter(<App />, { route: '/profile' });
+
+    expect(screen.getByTestId(emailTestId)).toBeInTheDocument();
+
+    expect(screen.getByTestId(doneRecipesTestId)).toBeInTheDocument();
+
+    expect(screen.getByTestId(favoriteRecipesTestId)).toBeInTheDocument();
+
+    expect(screen.getByTestId(logoutTestId)).toBeInTheDocument();
   });
 
-  afterEach(() => {
-    localStorage.clear();
-  });
+  it('Navega para rota Done Recipes quando o clique do botao ocorre', async () => {
+    renderWithRouter(<App />, { route: '/profile' });
 
-  test('renders user email', () => {
-    render(
-      <BrowserRouter>
-        <Profile />
-      </BrowserRouter>,
-    );
-
-    const emailElement = screen.getByTestId('profile-email');
-    expect(emailElement).toBeInTheDocument();
-    expect(emailElement.textContent).toBe('test@example.com');
-  });
-
-  test('redirects to done recipes page', () => {
-    const { container } = render(
-      <BrowserRouter>
-        <Profile />
-      </BrowserRouter>,
-    );
-
-    const doneRecipesButton = container.querySelector('[data-testid="profile-done-btn"]');
-    fireEvent.click(doneRecipesButton);
+    await userEvent.click(screen.getByTestId(doneRecipesTestId));
 
     expect(window.location.pathname).toBe('/done-recipes');
   });
 
-  test('redirects to favorite recipes page', () => {
-    const { container } = render(
-      <BrowserRouter>
-        <Profile />
-      </BrowserRouter>,
-    );
+  it('Navega para rota Favorite quando o clique do botao ocorre', async () => {
+    renderWithRouter(<App />, { route: '/profile' });
 
-    const favoriteRecipesButton = container.querySelector('[data-testid="profile-favorite-btn"]');
-    fireEvent.click(favoriteRecipesButton);
+    await userEvent.click(screen.getByTestId(favoriteRecipesTestId));
 
     expect(window.location.pathname).toBe('/favorite-recipes');
   });
 
-  test('clears localStorage and redirects to login page on logout', () => {
-    const { container } = render(
-      <BrowserRouter>
-        <Profile />
-      </BrowserRouter>,
-    );
+  it('Navega para Home e limpa local Storage quando o clique do botao ocorre', async () => {
+    renderWithRouter(<App />, { route: '/profile' });
 
-    const logoutButton = container.querySelector('[data-testid="profile-logout-btn"]');
-    fireEvent.click(logoutButton);
+    await userEvent.click(screen.getByTestId(logoutTestId));
+
+    expect(window.location.pathname).toBe('/');
 
     expect(localStorage.getItem('user')).toBeNull();
-    expect(window.location.pathname).toBe('/');
+
+    expect(localStorage.getItem('doneRecipes')).toBeNull();
+
+    expect(localStorage.getItem('favoriteRecipes')).toBeNull();
+
+    expect(localStorage.getItem('inProgressRecipes')).toBeNull();
+  });
+
+  it('Email do usuario salvo no local storage renderiza na tela', async () => {
+    localStorage.setItem('user', JSON.stringify({ email: 'teste@teste.com' }));
+
+    renderWithRouter(<App />, { route: '/profile' });
+
+    expect(screen.getByTestId(emailTestId)).toHaveTextContent('teste@teste.com');
   });
 });

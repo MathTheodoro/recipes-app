@@ -1,0 +1,24 @@
+.header {
+  width: 100%;
+  
+}
+
+.header-box {
+  align-items: center;
+  background-color: #fcdc36;
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+}
+
+.imgs, .icones {
+  margin-left: 100px;
+  margin-right: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+img {
+  margin: 20px;
+}

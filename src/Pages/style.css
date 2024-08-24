@@ -1,0 +1,36 @@
+.recommendation-card {
+  flex: 0 0 auto;
+  width: 300px;
+}
+
+.recommendations-carousel {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.start-recipe-btn {
+  bottom: 0;
+  position: fixed;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer-icon {
+  height: 50px;
+  width: 50px;
+}
+
+.footer {
+  background-color: #f0f0f0;
+  bottom: 0;
+  left: 0;
+  padding: 10px 0;
+  position: fixed;
+  right: 0;
+}
+

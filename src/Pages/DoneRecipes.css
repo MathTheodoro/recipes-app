@@ -1,0 +1,110 @@
+.doneRecipe {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+
+.doneRecipes-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.doneRecipes-btns button {
+  background-color: transparent;
+  border: none;
+}
+
+.doneRecipes-btns img {
+  width: 50px;
+}
+
+.doneRecipe-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+
+.doneRecipes-card {
+  align-items: center;
+  border: 2px solid rgba(128, 128, 128, 0.408);
+  border-radius: 10px;
+  display: flex;
+  flex-shrink: 0;
+  height: 161px;
+  justify-content: space-between;
+  width: auto;
+}
+
+.recipeDone-share-btn img {
+  height: 20px;
+  width: 20px;
+}
+
+.doneRecipes-card > button > img {
+  border: 0;
+  border-radius: 10px;
+  width: 160px;
+}
+
+.doneRecipes-card button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+
+}
+
+.doneRecipes-card h4 {
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 1rem;
+}
+
+.doneRecipes-card > div {
+  padding: 1rem;
+}
+
+.doneRecipe-info-drinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.doneRecipe-info-drinks h4 {
+  margin-bottom: 35px;
+}
+
+.doneRecipe-info-meals {
+  display: flex;
+  flex-flow: nowrap;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 1rem;
+}
+
+.doneRecipe-info-share-btn {
+  align-items: baseline;
+  display: flex;
+  gap: 0.3rem;
+  justify-content: center;
+
+}
+
+.doneRecipe-tags {
+  display: flex;
+  gap: 1rem;
+}
+
+.doneRecipe-tags > p {
+  background-color: rgba(128, 128, 128, 0.408);
+  border-radius: 10px;
+  padding: 0.1rem;
+}
+
